@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package fish.game;
+package videogame;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
