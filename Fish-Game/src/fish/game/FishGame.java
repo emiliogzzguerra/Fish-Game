@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaapplication5;
+package fish.game;
 
 /**
  *
  * @author emiliogonzalez
  */
-public class JavaApplication5 {
+public class FishGame {
 
     /**
      * @param args the command line arguments
