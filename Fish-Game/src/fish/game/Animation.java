@@ -9,7 +9,10 @@ import java.awt.image.BufferedImage;
 
 /**
  *
- * @author NamiDW
+ * @author NirvanaGaming
+ * 
+ * No modificar
+ * 
  */
 public class Animation {
     private int speed;  //for the speed of every frame

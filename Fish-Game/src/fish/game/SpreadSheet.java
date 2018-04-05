@@ -9,7 +9,10 @@ import java.awt.image.BufferedImage;
 
 /**
  *
- * @author NamiDW
+ * @author NirvanaGaming
+ * 
+ * No modificar
+ * 
  */
 public class SpreadSheet {
     private BufferedImage sheet;    //to store the spritesheet

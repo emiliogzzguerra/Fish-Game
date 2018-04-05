@@ -11,7 +11,10 @@ import java.awt.Rectangle;
 
 /**
  *
- * @author antoniomejorado
+ * @author NirvanaGaming
+ * 
+ * No modificar
+ * 
  */
 public abstract class Item {
     protected int x;        // to store x position

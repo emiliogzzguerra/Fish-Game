@@ -11,7 +11,10 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author antoniomejorado
+ * @author NirvanaGaming
+ * 
+ * No modificar
+ * 
  */
 public class Display {
     private JFrame jframe;  // this is the app class
