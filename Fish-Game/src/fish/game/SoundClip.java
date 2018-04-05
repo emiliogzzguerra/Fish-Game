@@ -15,7 +15,10 @@ import java.net.URL;
 
 /**
  *
- * @author NamiDW
+ * @author NirvanaGaming
+ * 
+ * No modificar
+ * 
  */
 public class SoundClip {
     
