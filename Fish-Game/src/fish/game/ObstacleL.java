@@ -12,11 +12,11 @@ import java.awt.Graphics;
  * @author NirvanaGaming
  * 
  */
-public class Obstacle extends Item{
+public class ObstacleL extends Item{
 
     private Game game;
     
-    public Obstacle(int x, int y, int width, int height, int color, Game game) {
+    public ObstacleL(int x, int y, int width, int height, Game game) {
         super(x, y, width, height);
         this.game = game;
     }

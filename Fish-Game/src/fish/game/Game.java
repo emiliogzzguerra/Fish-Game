@@ -37,7 +37,8 @@ public class Game implements Runnable {
     //Objetos
     private Pez pez;          // to use a player
     //Arreglos
-    private ArrayList<Obstacle> obstacles; //to store enemies collection
+    private ArrayList<ObstacleL> obstaclesL; //to store enemies collection
+    private ArrayList<ObstacleR> obstaclesR; //to store enemies collection
     //extras
     String titulo;
     //sonido
@@ -89,8 +90,8 @@ public class Game implements Runnable {
         return keyManager;
     }
 
-    public ArrayList<Obstacle> getObstacle() {
-        return obstacles;
+    public ArrayList<ObstacleL> getObstacle() {
+        return obstaclesL;
     }
 
     public Pez getPlayer() {
@@ -110,9 +111,21 @@ public class Game implements Runnable {
          //inicia el jugador donde??
          //pez = new Pez();
          //create Array of obstacle
-         obstacles = new ArrayList<>();
+         obstaclesL = new ArrayList<>();
+         obstaclesR = new ArrayList<>();
          //adding enemies to the colection
-
+         int widthObstacle = 50;
+         int heightObstacle = 30;
+         for(int i = 0; i < 4; i++)
+         {
+             ObstacleL obstacleL = new ObstacleL(0 ,i*100,widthObstacle, heightObstacle, this); 
+             obstaclesL.add(obstacleL);
+         }
+         for(int i = 0; i < 4; i++)
+         {
+             ObstacleL obstacleL = new ObstacleL(750 ,i*100,widthObstacle, heightObstacle, this); 
+             obstaclesL.add(obstacleL);
+         }
          //no modificar
          display.getJframe().addKeyListener(keyManager);
     }
