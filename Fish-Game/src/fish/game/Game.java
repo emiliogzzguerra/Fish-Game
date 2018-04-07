@@ -208,9 +208,15 @@ public class Game implements Runnable {
         while(itrOL.hasNext()){
             ObstacleL obstacleL = (ObstacleL) itrOL.next();
             obstacleL.tick();
+            //si sale del juego
             if(obstacleL.getY() >= getHeight())
             {
                 obstacleL.setY(-50);
+            }
+            //si choca con el pez
+            if(obstacleL.intersects(pez))
+            {
+                //poner gameOver
             }
         }
         
@@ -218,9 +224,14 @@ public class Game implements Runnable {
         while(itrOR.hasNext()){
             ObstacleR obstacleR = (ObstacleR) itrOR.next();
             obstacleR.tick();
+            //si sale del juego
             if(obstacleR.getY() >= getHeight())
             {
                 obstacleR.setY(-50);
+            }
+            if(obstacleR.intersects(pez))
+            {
+                //poner gameOver
             }
         }
         //actualizar score
