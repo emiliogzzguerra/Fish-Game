@@ -14,7 +14,7 @@ import java.awt.event.KeyListener;
  * 
  * Teclas que se usan:
  *  Space
- *  P (... pausa?)
+ *  S
  * 
  * Nota:
  * las teclas que entran en la condicion if, solo funcionaran una vez cada vez que se oprima.
@@ -25,7 +25,7 @@ import java.awt.event.KeyListener;
 public class KeyManager implements KeyListener {
     
     public boolean space;   //flag to shoot
-    public boolean P;
+    public boolean S;
     
     private boolean keys[];  // to store all the flags for every key
     
@@ -42,7 +42,7 @@ public class KeyManager implements KeyListener {
         // set true to every key pressed
         keys[e.getKeyCode()] = true;
         //set flag space of if need
-        if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_P)
+        if(e.getKeyCode() == KeyEvent.VK_S)
             keys[e.getKeyCode()] = false;
     }
 
@@ -51,7 +51,7 @@ public class KeyManager implements KeyListener {
         // set false to every key released
         keys[e.getKeyCode()] = false;
         //set flag space of if need
-        if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_P)
+        if(e.getKeyCode() == KeyEvent.VK_S)
             keys[e.getKeyCode()] = true;
     }
     
@@ -60,8 +60,7 @@ public class KeyManager implements KeyListener {
      */
     public void tick() {
         space = keys[KeyEvent.VK_SPACE];
-        keys[KeyEvent.VK_SPACE] = false;
-        P = keys[KeyEvent.VK_P];
-        keys[KeyEvent.VK_P] = false;
+        S = keys[KeyEvent.VK_S];
+        keys[KeyEvent.VK_S] = false;
     }
 }

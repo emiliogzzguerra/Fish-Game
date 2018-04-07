@@ -38,6 +38,7 @@ public class Game implements Runnable {
     private Pez pez;          // to use a player
     //Arreglos
     private ArrayList<Obstacle> obstacles; //to store enemies collection
+    private ArrayList<Background> backgrounds; //to store background collection
     //extras
     String titulo;
     //sonido
@@ -111,8 +112,19 @@ public class Game implements Runnable {
          //pez = new Pez();
          //create Array of obstacle
          obstacles = new ArrayList<>();
+         //create Array of backgrounds
+         backgrounds = new ArrayList<>();
+         crearBackground();
          //no modificar
          display.getJframe().addKeyListener(keyManager);
+    }
+    
+    private void crearBackground(){
+        for(int cont=0; cont<3; cont++){
+            backgrounds.add(new Background(0,0,getWidth(),getHeight(),this));
+            backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
+            backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
+        }
     }
     
     @Override
@@ -146,15 +158,16 @@ public class Game implements Runnable {
     }
     
     private void tick() {
-        /**
-         * Objetos con tick:
-         * KeyManager
-         * Pez
-         * Obstacle
-         * background
-         */
+        //KeyManager
         keyManager.tick();
-        pez.tick();
+        //player
+        //pez.tick();
+        //background
+        Iterator itr = backgrounds.iterator();
+        while(itr.hasNext()){
+            Background background = (Background) itr.next();
+            background.tick();
+        }
     }
     
     private void render() {
@@ -173,9 +186,13 @@ public class Game implements Runnable {
         {
             g = bs.getDrawGraphics();
             //fondo de pantalla
-            //g.drawImage(Assets.background, 0, 0, width, height, null);
+            Iterator itr = backgrounds.iterator();
+            while(itr.hasNext()){
+                Background background = (Background) itr.next();
+                background.render(g);
+            }
             //player
-            pez.render(g);
+            //pez.render(g);
             //no modificar
             bs.show();
             g.dispose();
