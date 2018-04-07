@@ -111,6 +111,8 @@ public class Game implements Runnable {
          //pez = new Pez();
          //create Array of obstacle
          obstacles = new ArrayList<>();
+         //adding enemies to the colection
+
          //no modificar
          display.getJframe().addKeyListener(keyManager);
     }
