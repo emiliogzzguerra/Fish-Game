@@ -5,7 +5,10 @@
  */
 package fish.game;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -200,6 +203,12 @@ public class Game implements Runnable {
             }
             //player
             //pez.render(g);
+            //score
+            Graphics2D g2d = (Graphics2D) g;
+            //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Verdana", Font.BOLD, 30));
+            g2d.drawString(tituloPuntos, 10, 30);
             //no modificar
             bs.show();
             g.dispose();
