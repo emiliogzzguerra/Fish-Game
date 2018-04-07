@@ -145,11 +145,9 @@ public class Game implements Runnable {
     }
     
     private void crearBackground(){
-        for(int cont=0; cont<3; cont++){
-            backgrounds.add(new Background(0,0,getWidth(),getHeight(),this));
-            backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
-            backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
-        }
+        backgrounds.add(new Background(0,0,getWidth(),getHeight(),this));
+        backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
+        backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
     }
     
     @Override
