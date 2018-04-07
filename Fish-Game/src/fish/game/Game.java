@@ -117,7 +117,7 @@ public class Game implements Runnable {
          display = new Display(title, getWidth(), getHeight());  
          Assets.init();
          //inicia el jugador donde??
-         //pez = new Pez();
+         pez = new Pez(this.getHeight()-20, this.getWidth()/2, 10, 10, this);
 
 
          //create Array of backgrounds
@@ -137,11 +137,9 @@ public class Game implements Runnable {
     }
     
     private void crearBackground(){
-        for(int cont=0; cont<3; cont++){
-            backgrounds.add(new Background(0,0,getWidth(),getHeight(),this));
-            backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
-            backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
-        }
+        backgrounds.add(new Background(0,0,getWidth(),getHeight(),this));
+        backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
+        backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
     }
     
     private void addEnemiesR(int widthObstacle, int heightObstacle){
@@ -194,7 +192,7 @@ public class Game implements Runnable {
         //KeyManager
         keyManager.tick();
         //player
-        //pez.tick();
+        pez.tick();
         //background
         Iterator itr = backgrounds.iterator();
         while(itr.hasNext()){
@@ -262,7 +260,7 @@ public class Game implements Runnable {
                 ((ObstacleR) itrOR.next()).render(g);
             }
             //player
-            //pez.render(g);
+            pez.render(g);
             //score
             Graphics2D g2d = (Graphics2D) g;
             //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

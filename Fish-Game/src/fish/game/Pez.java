@@ -5,6 +5,7 @@
  */
 package fish.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -26,6 +27,7 @@ public class Pez extends Item{
     private Animation animationDown;    //to store the animation for going down
     private Animation animationRight;   //to store the animation for going right
     private SoundClip musica;
+    private boolean moveToRight;
     
     
     /**
@@ -40,26 +42,35 @@ public class Pez extends Item{
         super(x, y, width, height);
         this.game = game;
         //sonido al traspasar los limites de la ventana
-        musica = new SoundClip("/sonido/choque-madera.wav");
+        //musica = new SoundClip("/sonido/choque-madera.wav");
         //animaciones
         this.animationUp = new Animation(Assets.playerUp,100);
         this.animationLeft = new Animation(Assets.playerLeft,100);
         this.animationDown = new Animation(Assets.playerDown,100);
         this.animationRight = new Animation(Assets.playerRight,100);
+        this.moveToRight = true;
     }
 
     @Override
     public void tick() {
-        //moviendo al personaje
-        
-        
-        //personaje fuera de limites de ventana
-        
+        //moviendo al personaje de derecha a izquierda
+        if(moveToRight){
+            setX(getX() + 5);
+            if(getX()+getWidth() >= game.getWidth()-20){
+                moveToRight = false;
+            }
+        } else {
+            setX(getX() - 5);
+            if(getX() <= 20){
+                moveToRight = true;
+            }
+        }        
     }
 
     @Override
     public void render(Graphics g) {
         //imagenes segun el movimiento
-        
+        g.setColor(Color.WHITE);
+        g.fillOval(getX(), getY(), getWidth(), getHeight());
     }
 }
