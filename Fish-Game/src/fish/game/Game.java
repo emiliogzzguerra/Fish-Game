@@ -167,6 +167,9 @@ public class Game implements Runnable {
         while(itr.hasNext()){
             Background background = (Background) itr.next();
             background.tick();
+            if(background.getY()>=getHeight()){
+                background.setY(-getHeight()*2);
+            }
         }
     }
     
