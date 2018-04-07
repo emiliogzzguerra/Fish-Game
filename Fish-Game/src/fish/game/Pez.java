@@ -20,7 +20,6 @@ import java.awt.Graphics;
  * 
  */
 public class Pez extends Item{
-    chequen pez movimiento!!!
 
     private Game game;
     private Animation animationUp;  //to store the animation for going up
