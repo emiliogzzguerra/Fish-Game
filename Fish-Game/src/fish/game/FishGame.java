@@ -21,8 +21,7 @@ package fish.game;
  * 
  * Notas:
  * Por definir
- *  Tamano de la ventana?
- *  Titulo de la ventana?
+ *  Tamano de la ventana?\
  * Checar
  *  Game
  *  Assets

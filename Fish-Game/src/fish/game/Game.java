@@ -39,13 +39,13 @@ public class Game implements Runnable {
     //Arreglos
     private ArrayList<Obstacle> obstacles; //to store enemies collection
     private ArrayList<Background> backgrounds; //to store background collection
-    //extras
-    String tituloPuntos;
-    String puntos;
     //sonido
     private SoundClip musica;
     //ints
     private int puntuacion;
+    //extras
+    String tituloPuntos;
+    String letPuntos;
     //boolean
     private boolean running;        // to set the game
     
@@ -60,12 +60,13 @@ public class Game implements Runnable {
         this.height = height;
         this.title = title;
         keyManager = new KeyManager();
-        //extras
-        tituloPuntos = puntos + puntuacion;
         //boolean
         running = false;
         //int
         puntuacion = 0;
+        //extras
+        letPuntos = "Score: ";
+        tituloPuntos = letPuntos + puntuacion;
         //agregar sonidos (por definir, para version 2)
         //musica = new SoundClip("/sonido/ringtones-be-happy.wav");
         //musica.setLooping(true);
@@ -172,6 +173,8 @@ public class Game implements Runnable {
                 background.setY(-getHeight()*2);
             }
         }
+        //actualizar score
+        tituloPuntos = letPuntos + puntuacion;
     }
     
     private void render() {
