@@ -128,18 +128,10 @@ public class Game implements Runnable {
          //create Array of obstacles right
          obstaclesR = new ArrayList<>();
          //adding enemies to the colection
-         int widthObstacle = 50;
+         int widthObstacle = 100;
          int heightObstacle = 30;
-         for(int i = 0; i < 4; i++)
-         {
-             ObstacleL obstacleL = new ObstacleL(0 ,i*100,widthObstacle, heightObstacle, this); 
-             obstaclesL.add(obstacleL);
-         }
-         for(int i = 0; i < 4; i++)
-         {
-             ObstacleL obstacleL = new ObstacleL(750 ,i*100,widthObstacle, heightObstacle, this); 
-             obstaclesL.add(obstacleL);
-         }
+         addEnemiesL(widthObstacle, heightObstacle);
+         addEnemiesR(widthObstacle, heightObstacle);
          //no modificar
          display.getJframe().addKeyListener(keyManager);
     }
@@ -150,6 +142,22 @@ public class Game implements Runnable {
             backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
             backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
         }
+    }
+    
+    private void addEnemiesR(int widthObstacle, int heightObstacle){
+         for(int i = 0; i < 4; i++)
+         {
+             ObstacleR obstacleR = new ObstacleR(700 ,i*100 + 50,widthObstacle, heightObstacle, this); 
+             obstaclesR.add(obstacleR);
+         }
+    }
+    
+    private void addEnemiesL(int widthObstacle, int heightObstacle){
+         for(int i = 0; i < 4; i++)
+         {
+             ObstacleL obstacleL = new ObstacleL(0 ,i*100,widthObstacle, heightObstacle, this); 
+             obstaclesL.add(obstacleL);
+         }
     }
     
     @Override
@@ -196,6 +204,27 @@ public class Game implements Runnable {
                 background.setY(-getHeight()*2);
             }
         }
+        //obstacles
+        
+        Iterator itrOL = obstaclesL.iterator();
+        while(itrOL.hasNext()){
+            ObstacleL obstacleL = (ObstacleL) itrOL.next();
+            obstacleL.tick();
+            if(obstacleL.getY() >= getHeight())
+            {
+                obstacleL.setY(-50);
+            }
+        }
+        
+        Iterator itrOR = obstaclesR.iterator();
+        while(itrOR.hasNext()){
+            ObstacleR obstacleR = (ObstacleR) itrOR.next();
+            obstacleR.tick();
+            if(obstacleR.getY() >= getHeight())
+            {
+                obstacleR.setY(-50);
+            }
+        }
         //actualizar score
         tituloPuntos = letPuntos + puntuacion;
     }
@@ -220,6 +249,17 @@ public class Game implements Runnable {
             while(itr.hasNext()){
                 Background background = (Background) itr.next();
                 background.render(g);
+            }
+            //obstaculos de la izquierda
+            Iterator itrOL = obstaclesL.iterator();
+            while (itrOL.hasNext()) 
+            {
+                ((ObstacleL) itrOL.next()).render(g);
+            }
+            Iterator itrOR = obstaclesR.iterator();
+            while (itrOR.hasNext()) 
+            {
+                ((ObstacleR) itrOR.next()).render(g);
             }
             //player
             //pez.render(g);
