@@ -116,10 +116,8 @@ public class Game implements Runnable {
     private void init() {
          display = new Display(title, getWidth(), getHeight());  
          Assets.init();
-         //inicia el jugador donde??
-         pez = new Pez(this.getHeight()-20, this.getWidth()/2, 10, 10, this);
-
-
+         //player
+         pez = new Pez(this.getHeight()-20, this.getWidth()/2, 40, 40, this);
          //create Array of backgrounds
          backgrounds = new ArrayList<>();
          crearBackground();
