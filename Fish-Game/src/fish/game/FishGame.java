@@ -45,7 +45,7 @@ public class FishGame {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Game g = new Game(800, 500);
+        Game g = new Game(800, 500, "Fish-Game");
         g.start();
     }
     

@@ -40,7 +40,8 @@ public class Game implements Runnable {
     private ArrayList<Obstacle> obstacles; //to store enemies collection
     private ArrayList<Background> backgrounds; //to store background collection
     //extras
-    String titulo;
+    String tituloPuntos;
+    String puntos;
     //sonido
     private SoundClip musica;
     //ints
@@ -53,14 +54,14 @@ public class Game implements Runnable {
      * @param width to set the width of the window
      * @param height  to set the height of the window
      */
-    public Game(int width, int height) {
+    public Game(int width, int height, String title) {
         //obligatorio
         this.width = width;
         this.height = height;
+        this.title = title;
         keyManager = new KeyManager();
         //extras
-        title = "Puntos: ";
-        titulo = title + puntuacion;
+        tituloPuntos = puntos + puntuacion;
         //boolean
         running = false;
         //int
@@ -106,7 +107,7 @@ public class Game implements Runnable {
      * initializing the display window of the game
      */
     private void init() {
-         display = new Display(titulo, getWidth(), getHeight());  
+         display = new Display(title, getWidth(), getHeight());  
          Assets.init();
          //inicia el jugador donde??
          //pez = new Pez();
