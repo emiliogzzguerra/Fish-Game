@@ -21,8 +21,7 @@ package fish.game;
  * 
  * Notas:
  * Por definir
- *  Tamano de la ventana?
- *  Titulo de la ventana?
+ *  Tamano de la ventana?\
  * Checar
  *  Game
  *  Assets
@@ -45,7 +44,7 @@ public class FishGame {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Game g = new Game(800, 500);
+        Game g = new Game(800, 500, "Fish-Game");
         g.start();
     }
     

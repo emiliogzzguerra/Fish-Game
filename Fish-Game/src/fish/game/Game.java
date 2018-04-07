@@ -5,7 +5,10 @@
  */
 package fish.game;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,12 +42,13 @@ public class Game implements Runnable {
     //Arreglos
     private ArrayList<Obstacle> obstacles; //to store enemies collection
     private ArrayList<Background> backgrounds; //to store background collection
-    //extras
-    String titulo;
     //sonido
     private SoundClip musica;
     //ints
     private int puntuacion;
+    //extras
+    String tituloPuntos;
+    String letPuntos;
     //boolean
     private boolean running;        // to set the game
     
@@ -53,18 +57,19 @@ public class Game implements Runnable {
      * @param width to set the width of the window
      * @param height  to set the height of the window
      */
-    public Game(int width, int height) {
+    public Game(int width, int height, String title) {
         //obligatorio
         this.width = width;
         this.height = height;
+        this.title = title;
         keyManager = new KeyManager();
-        //extras
-        title = "Puntos: ";
-        titulo = title + puntuacion;
         //boolean
         running = false;
         //int
         puntuacion = 0;
+        //extras
+        letPuntos = "Score: ";
+        tituloPuntos = letPuntos + puntuacion;
         //agregar sonidos (por definir, para version 2)
         //musica = new SoundClip("/sonido/ringtones-be-happy.wav");
         //musica.setLooping(true);
@@ -106,7 +111,7 @@ public class Game implements Runnable {
      * initializing the display window of the game
      */
     private void init() {
-         display = new Display(titulo, getWidth(), getHeight());  
+         display = new Display(title, getWidth(), getHeight());  
          Assets.init();
          //inicia el jugador donde??
          //pez = new Pez();
@@ -171,6 +176,8 @@ public class Game implements Runnable {
                 background.setY(-getHeight()*2);
             }
         }
+        //actualizar score
+        tituloPuntos = letPuntos + puntuacion;
     }
     
     private void render() {
@@ -196,6 +203,12 @@ public class Game implements Runnable {
             }
             //player
             //pez.render(g);
+            //score
+            Graphics2D g2d = (Graphics2D) g;
+            //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Verdana", Font.BOLD, 30));
+            g2d.drawString(tituloPuntos, 10, 30);
             //no modificar
             bs.show();
             g.dispose();
