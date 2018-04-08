@@ -43,6 +43,7 @@ public class Game implements Runnable {
     private ArrayList<Background> backgrounds; //to store background collection
     private ArrayList<ObstacleL> obstaclesL; //to store enemies collection
     private ArrayList<ObstacleR> obstaclesR; //to store enemies collection
+    private ArrayList<Stalker> stalkers; //to store stalkers collection
     //extras
     String titulo;
     //sonido
@@ -138,6 +139,9 @@ public class Game implements Runnable {
              ObstacleL obstacleL = new ObstacleL(750 ,i*100,widthObstacle, heightObstacle, this); 
              obstaclesL.add(obstacleL);
          }
+         //create Array of stalkers
+         stalkers = new ArrayList<>();
+         crearStalker();
          //no modificar
          display.getJframe().addKeyListener(keyManager);
     }
@@ -147,6 +151,12 @@ public class Game implements Runnable {
             backgrounds.add(new Background(0,0,getWidth(),getHeight(),this));
             backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
             backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
+        }
+    }
+    
+    private void crearStalker(){
+        for(int i=0; i<9; i++){
+            stalkers.add(new Stalker(pez.getX()-pez.getWidth()/2,pez.getY(),(9-i)*(pez.getWidth()/10),-(pez.getWidth()/2),(pez.getWidth()/2),(i+1)*(pez.getWidth()/5),(pez.getHeight()/2),(pez.getHeight()/2),this));
         }
     }
     
@@ -194,6 +204,12 @@ public class Game implements Runnable {
                 background.setY(-getHeight()*2);
             }
         }
+        //stalker
+        itr = stalkers.iterator();
+        while(itr.hasNext()){
+            Stalker stalker = (Stalker) itr.next();
+            stalker.tick();
+        }
         //actualizar score
         tituloPuntos = letPuntos + puntuacion;
     }
@@ -218,6 +234,12 @@ public class Game implements Runnable {
             while(itr.hasNext()){
                 Background background = (Background) itr.next();
                 background.render(g);
+            }
+            //stalker (IMPORTANTE: mantener el stalker.render arriba del pez.render)
+            itr = stalkers.iterator();
+            while(itr.hasNext()){
+                Stalker stalker = (Stalker) itr.next();
+                stalker.render(g);
             }
             //player
             pez.render(g);
