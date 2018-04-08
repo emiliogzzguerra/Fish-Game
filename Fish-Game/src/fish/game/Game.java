@@ -215,6 +215,7 @@ public class Game implements Runnable {
         while(itr.hasNext()){
             Stalker stalker = (Stalker) itr.next();
             stalker.tick();
+        }
         //obstacles
         itr = obstaclesL.iterator();
         while(itr.hasNext()){
@@ -248,6 +249,7 @@ public class Game implements Runnable {
         //actualizar score
         tituloPuntos = letPuntos + puntuacion;
     }
+
     
     private void render() {
         // get the buffer strategy from the display
