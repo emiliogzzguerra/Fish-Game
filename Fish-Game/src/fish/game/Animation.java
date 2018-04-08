@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
  * 
  */
 public class Animation {
+    
     private int speed;  //for the speed of every frame
     private int index;  //to get the index of next frame to paint
     private long lastTime;  //to save the prevoius time of the animation
@@ -31,10 +32,6 @@ public class Animation {
     
     public BufferedImage getCurrentFrame(){
         return frames[index];
-    }
-
-    public BufferedImage getFrames(int n) {
-        return frames[n];
     }
     
     public void tick(){

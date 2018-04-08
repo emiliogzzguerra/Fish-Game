@@ -18,7 +18,6 @@ import java.util.Iterator;
  * @author NirvanaGaming
  * 
  * Por corregir
- * Mostrar score en pantalla
  * El sonido al salir de los limites de la ventana, esta actualmente dentro del
  * personaje... se queda asi o se cambia a game??
  * 
@@ -46,15 +45,17 @@ public class Game implements Runnable {
     private ArrayList<Stalker> stalkers; //to store stalkers collection
     //extras
     String titulo;
-    //sonido
-    private SoundClip musica;
     //ints
     private int puntuacion;
+    private int contador;
+    private int contObstacle;
     //extras
     String tituloPuntos;
     String letPuntos;
     //boolean
     private boolean running;        // to set the game
+    private boolean gameover;       // to end the game
+    private boolean blinking;
     
     /**
      * to create title, width and height and set the game is still not running
@@ -69,14 +70,15 @@ public class Game implements Runnable {
         keyManager = new KeyManager();
         //boolean
         running = false;
+        gameover = false;
+        blinking = false;
         //int
         puntuacion = 0;
+        contador = 0;
+        contObstacle = 0;
         //extras
         letPuntos = "Score: ";
         tituloPuntos = letPuntos + puntuacion;
-        //agregar sonidos (por definir, para version 2)
-        //musica = new SoundClip("/sonido/ringtones-be-happy.wav");
-        //musica.setLooping(true);
     }
 
     /**
@@ -99,41 +101,37 @@ public class Game implements Runnable {
         return keyManager;
     }
 
-    public ArrayList<ObstacleL> getObstacle() {
-        return obstaclesL;
-    }
-
     public Pez getPlayer() {
         return pez;
     }
 
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
+        contador = 0;
     }
 
     /**
      * initializing the display window of the game
      */
     private void init() {
+        //no modificar
          display = new Display(title, getWidth(), getHeight());  
          Assets.init();
-         //player
-         pez = new Pez(this.getHeight()-20, this.getWidth()/2, 40, 40, this);
+         
+         //create player
+         pez = new Pez(getWidth()/2,getHeight()-100, 40, 40, this);
+         
          //create Array of backgrounds
          backgrounds = new ArrayList<>();
          crearBackground();
          //create Array of stalkers
          stalkers = new ArrayList<>();
-         crearStalker();
-         //create Array of obstacles left
+         crearStalkers();
+         //create Array of obstacles
          obstaclesL = new ArrayList<>();
-         //create Array of obstacles right
          obstaclesR = new ArrayList<>();
-         //adding enemies to the colection
-         int widthObstacle = 100;
-         int heightObstacle = 30;
-         addEnemiesL(widthObstacle, heightObstacle);
-         addEnemiesR(widthObstacle, heightObstacle);
+         crearObstacles();
+         
          //no modificar
          display.getJframe().addKeyListener(keyManager);
     }
@@ -144,26 +142,70 @@ public class Game implements Runnable {
         backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
     }
     
-    private void addEnemiesR(int widthObstacle, int heightObstacle){
-         for(int i = 0; i < 4; i++)
-         {
-             ObstacleR obstacleR = new ObstacleR(700 ,i*100 + 50,widthObstacle, heightObstacle, this); 
-             obstaclesR.add(obstacleR);
+    private void crearObstacles(){
+         for(int i = 0; i < 4; i++){
+            if((int) (Math.random()*2)==0)
+                obstaclesR.add(new ObstacleR(getWidth()-100,i*(getHeight()/5)-30,100,30,this));
+            else
+                obstaclesL.add(new ObstacleL(0,i*(getHeight()/5)-30,100,30,this));
          }
     }
     
-    private void addEnemiesL(int widthObstacle, int heightObstacle){
-         for(int i = 0; i < 4; i++)
-         {
-             ObstacleL obstacleL = new ObstacleL(0 ,i*100,widthObstacle, heightObstacle, this); 
-             obstaclesL.add(obstacleL);
-         }
-    }
-    
-    private void crearStalker(){
+    private void crearStalkers(){
         for(int i=0; i<9; i++){
             stalkers.add(new Stalker(pez.getX()-pez.getWidth()/2,pez.getY(),(9-i)*(pez.getWidth()/10),-(pez.getWidth()/2),(pez.getWidth()/2),(i+1)*(pez.getWidth()/5),(pez.getHeight()/2),(pez.getHeight()/2),this));
         }
+    }
+    
+     private void agregarObstacle(){
+        if((int) (Math.random()*2)==0)
+            obstaclesR.add(new ObstacleR(getWidth()-100,-30,100,30,this));
+        else
+            obstaclesL.add(new ObstacleL(0,-30,100,30,this));
+    }
+    
+    private void eliminarBackground(){
+        Iterator itr = backgrounds.iterator();
+        while(itr.hasNext()){
+            backgrounds.remove((Background) itr.next());
+            itr = backgrounds.iterator();
+        }
+    }
+    
+    private void eliminarObstacles(){
+        Iterator itr = obstaclesL.iterator();
+        while(itr.hasNext()){
+            obstaclesL.remove((ObstacleL) itr.next());
+            itr = obstaclesL.iterator();
+        }
+        itr = obstaclesR.iterator();
+        while(itr.hasNext()){
+            obstaclesR.remove((ObstacleR) itr.next());
+            itr = obstaclesR.iterator();
+        }
+    }
+    
+   private void eliminarStalkers(){
+        Iterator itr = stalkers.iterator();
+        while(itr.hasNext()){
+            stalkers.remove((Stalker) itr.next());
+            itr = stalkers.iterator();
+        }
+    }
+    
+    private void reordenar(){
+        //eliminar objetos de arreglos
+        eliminarBackground();
+        eliminarObstacles();
+        eliminarStalkers();
+        //reposicionar player
+        pez.setX(getWidth()/2);
+        //reiniciar conteo
+        setPuntuacion(0);
+        //recrear objetos de arreglos
+        crearBackground();
+        crearObstacles();
+        crearStalkers();
     }
     
     @Override
@@ -199,57 +241,72 @@ public class Game implements Runnable {
     private void tick() {
         //KeyManager
         keyManager.tick();
-        //player
-        pez.tick();
-        //background
-        Iterator itr = backgrounds.iterator();
-        while(itr.hasNext()){
-            Background background = (Background) itr.next();
-            background.tick();
-            if(background.getY()>=getHeight()){
-                background.setY(-getHeight()*2);
+        if(!gameover){
+            if(keyManager.space){
+                contador++;
+                if(contador>=100){
+                    puntuacion++;
+                    contador=0;
+                }
+                contObstacle++;
+                if(contObstacle>=(getHeight()/5)){
+                    agregarObstacle();
+                    contObstacle=0;
+                }
             }
+            //player
+            pez.tick();
+            //background
+            Iterator itr = backgrounds.iterator();
+            while(itr.hasNext()){
+                Background background = (Background) itr.next();
+                background.tick();
+                if(background.getY()>=getHeight()){
+                    background.setY(-getHeight()*2);
+                }
+            }
+            //stalker
+            itr = stalkers.iterator();
+            while(itr.hasNext()){
+                Stalker stalker = (Stalker) itr.next();
+                stalker.tick();
+            }
+            //obstacles
+            itr = obstaclesL.iterator();
+            while(itr.hasNext()){
+                ObstacleL obstacle = (ObstacleL) itr.next();
+                obstacle.tick();
+                //si sale del juego
+                if(obstacle.getY() >= getHeight()){
+                    obstaclesL.remove(obstacle);
+                    itr = obstaclesL.iterator();
+                }
+                //si choca con player
+                if(obstacle.intersects(pez))
+                    gameover = true;
+            }
+            itr = obstaclesR.iterator();
+            while(itr.hasNext()){
+                ObstacleR obstacle = (ObstacleR) itr.next();
+                obstacle.tick();
+                //si sale del juego
+                if(obstacle.getY() >= getHeight()){
+                    obstaclesR.remove(obstacle);
+                    itr = obstaclesR.iterator();
+                }
+                //si choca con player
+                if(obstacle.intersects(pez))
+                    gameover= true;
+            }
+            //actualizar score
+            tituloPuntos = letPuntos + puntuacion;
         }
-        //stalker
-        itr = stalkers.iterator();
-        while(itr.hasNext()){
-            Stalker stalker = (Stalker) itr.next();
-            stalker.tick();
-        }
-        //obstacles
-        itr = obstaclesL.iterator();
-        while(itr.hasNext()){
-            ObstacleL obstacle = (ObstacleL) itr.next();
-            obstacle.tick();
-            //si sale del juego
-            if(obstacle.getY() >= getHeight())
-            {
-                obstacle.setY(-50);
+        else
+            if(keyManager.R){
+                gameover = false;
+                reordenar();
             }
-            //si choca con el pez
-            if(obstacle.intersects(pez))
-            {
-                //poner gameOver
-            }
-        }
-        itr = obstaclesR.iterator();
-        while(itr.hasNext()){
-            ObstacleR obstacle = (ObstacleR) itr.next();
-            obstacle.tick();
-            //si sale del juego
-            if(obstacle.getY() >= getHeight())
-            {
-                obstacle.setY(-50);
-            }
-            if(obstacle.intersects(pez))
-            {
-                //poner gameOver
-            }
-        }
-        //actualizar score
-        tituloPuntos = letPuntos + puntuacion;
     }
-
     
     private void render() {
         // get the buffer strategy from the display
@@ -266,6 +323,7 @@ public class Game implements Runnable {
         else
         {
             g = bs.getDrawGraphics();
+            
             //fondo de pantalla
             Iterator itr = backgrounds.iterator();
             while(itr.hasNext()){
@@ -290,6 +348,41 @@ public class Game implements Runnable {
             g2d.setColor(Color.WHITE);
             g2d.setFont(new Font("Verdana", Font.BOLD, 30));
             g2d.drawString(tituloPuntos, 10, 30);
+            //gameover (IMPORTANTE: mantener el gameove.render por debajo de los otros renders)
+            if(gameover){
+                g.drawImage(Assets.gameover, 0, 0, width, height, null);
+                
+                g2d.setColor(Color.WHITE);
+                g2d.setFont(new Font("Verdana", Font.BOLD, 80));
+                g2d.drawString("Gameover", (getWidth()/2)-200, getHeight()/6);
+                
+                g2d.setColor(Color.WHITE);
+                g2d.setFont(new Font("Verdana", Font.BOLD, 60));
+                g2d.drawString("Score", (getWidth()/2)-100, getHeight()/3);
+                
+                g2d.setColor(Color.WHITE);
+                g2d.setFont(new Font("Verdana", Font.BOLD, 100));
+                g2d.drawString("" + puntuacion, (getWidth()/2)-40, getHeight()/2);
+                
+                if(blinking){
+                    g2d.setColor(Color.WHITE);
+                    g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+                    g2d.drawString("Presiona 'R' para volver a jugar!!", 200, getHeight()-40);
+                    contador++;
+                    if(contador >= 17){
+                        blinking = false;
+                        contador = 0;
+                    }
+                }
+                else{
+                    contador++;
+                    if(contador >= 17){
+                        blinking = true;
+                        contador = 0;
+                    }
+                }
+            }
+            
             //no modificar
             bs.show();
             g.dispose();

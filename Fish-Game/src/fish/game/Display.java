@@ -74,10 +74,6 @@ public class Display {
         return jframe;
     }
     
-    public void changJframe(String title){
-        jframe.setTitle(title);
-    }
-    
     /**
      * to get the canvas of the game
      * @return the canvas

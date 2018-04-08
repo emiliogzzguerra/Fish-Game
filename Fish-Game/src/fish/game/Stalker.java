@@ -13,9 +13,11 @@ import java.awt.Graphics;
  * @author NirvanaGaming
  * 
  * Persigue al Pez, dando ilusion de movimiento.
+ * 
  */
 public class Stalker extends Item{
     private Game game;
+    
     //boolean
     private boolean right;
     private boolean left;

@@ -15,25 +15,24 @@ package fish.game;
  * Mikel Rubíes Isla        a00821467
  * Andrés Aguirre González  a01039656
  * 
- * Version 1.3
- * 4 de abril, 2018
- * Creacion de las clases bases.
+ * Version 1.4
+ * 7 de abril, 2018
+ * Creacion de obstacle, background, player y stalker.
+ * Funcionalidad de puntuacion y pantalla de gameover.
  * 
  * Notas:
- * Por definir
- *  Tamano de la ventana?\
  * Checar
  *  Game
  *  Assets
  *  Pez
  *  Obstacle
- *  KeyManager
  * Terminado
  *  Animation
  *  Display
  *  Item
  *  SpreadSheet
  *  SoundClip
+ *  KeyManager
  * Para version 2
  *  Files
  */

@@ -16,11 +16,10 @@ import java.awt.Graphics;
  * 
  * Sugerencia:
  * podriamos poner una musica para cada tipo de fondo, asi es diferente fondo, tendra diferente musica.
+ * 
  */
 public class Background extends Item{
-
     private Game game;
-    //private Animation animationUp;  //to store the animation for going up
     
     /**
      * To build a Player object
@@ -41,13 +40,10 @@ public class Background extends Item{
         if(game.getKeyManager().space){
             setY(getY()+1);
         }
-        //personaje fuera de limites de ventana
-        
     }
 
     @Override
     public void render(Graphics g) {
-        //imagenes segun el movimiento
         g.drawImage(Assets.background, getX(), getY(), getWidth(), getHeight(), null);
     }
 }

@@ -15,6 +15,7 @@ import java.awt.event.KeyListener;
  * Teclas que se usan:
  *  Space
  *  S
+ *  R
  * 
  * Nota:
  * las teclas que entran en la condicion if, solo funcionaran una vez cada vez que se oprima.
@@ -24,8 +25,9 @@ import java.awt.event.KeyListener;
  */
 public class KeyManager implements KeyListener {
     
-    public boolean space;   //flag to shoot
-    public boolean S;
+    public boolean space;   //para avanzar
+    public boolean S;       //para saltar
+    public boolean R;       //para volver a jugar
     
     private boolean keys[];  // to store all the flags for every key
     
@@ -42,7 +44,7 @@ public class KeyManager implements KeyListener {
         // set true to every key pressed
         keys[e.getKeyCode()] = true;
         //set flag space of if need
-        if(e.getKeyCode() == KeyEvent.VK_S)
+        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_R)
             keys[e.getKeyCode()] = false;
     }
 
@@ -51,7 +53,7 @@ public class KeyManager implements KeyListener {
         // set false to every key released
         keys[e.getKeyCode()] = false;
         //set flag space of if need
-        if(e.getKeyCode() == KeyEvent.VK_S)
+        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_R)
             keys[e.getKeyCode()] = true;
     }
     
@@ -62,5 +64,7 @@ public class KeyManager implements KeyListener {
         space = keys[KeyEvent.VK_SPACE];
         S = keys[KeyEvent.VK_S];
         keys[KeyEvent.VK_S] = false;
+        R = keys[KeyEvent.VK_R];
+        keys[KeyEvent.VK_R] = false;
     }
 }

@@ -14,7 +14,6 @@ import java.awt.Graphics;
  * 
  */
 public class ObstacleL extends Item{
-
     private Game game;
     
     public ObstacleL(int x, int y, int width, int height, Game game) {
@@ -24,7 +23,6 @@ public class ObstacleL extends Item{
 
     @Override
     public void tick() {
-        //movimiento
         //moviendo a los obstaculos
         if(game.getKeyManager().space){
             setY(getY()+1);
