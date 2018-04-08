@@ -122,36 +122,42 @@ public class Game implements Runnable {
          //create Array of backgrounds
          backgrounds = new ArrayList<>();
          crearBackground();
+         //create Array of stalkers
+         stalkers = new ArrayList<>();
+         crearStalker();
          //create Array of obstacles left
          obstaclesL = new ArrayList<>();
          //create Array of obstacles right
          obstaclesR = new ArrayList<>();
          //adding enemies to the colection
-         int widthObstacle = 50;
+         int widthObstacle = 100;
          int heightObstacle = 30;
-         for(int i = 0; i < 4; i++)
-         {
-             ObstacleL obstacleL = new ObstacleL(0 ,i*100,widthObstacle, heightObstacle, this); 
-             obstaclesL.add(obstacleL);
-         }
-         for(int i = 0; i < 4; i++)
-         {
-             ObstacleL obstacleL = new ObstacleL(750 ,i*100,widthObstacle, heightObstacle, this); 
-             obstaclesL.add(obstacleL);
-         }
-         //create Array of stalkers
-         stalkers = new ArrayList<>();
-         crearStalker();
+         addEnemiesL(widthObstacle, heightObstacle);
+         addEnemiesR(widthObstacle, heightObstacle);
          //no modificar
          display.getJframe().addKeyListener(keyManager);
     }
     
     private void crearBackground(){
-        for(int cont=0; cont<3; cont++){
-            backgrounds.add(new Background(0,0,getWidth(),getHeight(),this));
-            backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
-            backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
-        }
+        backgrounds.add(new Background(0,0,getWidth(),getHeight(),this));
+        backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
+        backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
+    }
+    
+    private void addEnemiesR(int widthObstacle, int heightObstacle){
+         for(int i = 0; i < 4; i++)
+         {
+             ObstacleR obstacleR = new ObstacleR(700 ,i*100 + 50,widthObstacle, heightObstacle, this); 
+             obstaclesR.add(obstacleR);
+         }
+    }
+    
+    private void addEnemiesL(int widthObstacle, int heightObstacle){
+         for(int i = 0; i < 4; i++)
+         {
+             ObstacleL obstacleL = new ObstacleL(0 ,i*100,widthObstacle, heightObstacle, this); 
+             obstaclesL.add(obstacleL);
+         }
     }
     
     private void crearStalker(){
@@ -209,6 +215,35 @@ public class Game implements Runnable {
         while(itr.hasNext()){
             Stalker stalker = (Stalker) itr.next();
             stalker.tick();
+        //obstacles
+        itr = obstaclesL.iterator();
+        while(itr.hasNext()){
+            ObstacleL obstacle = (ObstacleL) itr.next();
+            obstacle.tick();
+            //si sale del juego
+            if(obstacle.getY() >= getHeight())
+            {
+                obstacle.setY(-50);
+            }
+            //si choca con el pez
+            if(obstacle.intersects(pez))
+            {
+                //poner gameOver
+            }
+        }
+        itr = obstaclesR.iterator();
+        while(itr.hasNext()){
+            ObstacleR obstacle = (ObstacleR) itr.next();
+            obstacle.tick();
+            //si sale del juego
+            if(obstacle.getY() >= getHeight())
+            {
+                obstacle.setY(-50);
+            }
+            if(obstacle.intersects(pez))
+            {
+                //poner gameOver
+            }
         }
         //actualizar score
         tituloPuntos = letPuntos + puntuacion;
@@ -237,15 +272,19 @@ public class Game implements Runnable {
             }
             //stalker (IMPORTANTE: mantener el stalker.render arriba del pez.render)
             itr = stalkers.iterator();
-            while(itr.hasNext()){
-                Stalker stalker = (Stalker) itr.next();
-                stalker.render(g);
-            }
+            while(itr.hasNext())
+                ((Stalker) itr.next()).render(g);
+            //obstaculos
+            itr = obstaclesL.iterator();
+            while (itr.hasNext())
+                ((ObstacleL) itr.next()).render(g);
+            itr = obstaclesR.iterator();
+            while (itr.hasNext())
+                ((ObstacleR) itr.next()).render(g);
             //player
             pez.render(g);
             //score
             Graphics2D g2d = (Graphics2D) g;
-            //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setColor(Color.WHITE);
             g2d.setFont(new Font("Verdana", Font.BOLD, 30));
             g2d.drawString(tituloPuntos, 10, 30);

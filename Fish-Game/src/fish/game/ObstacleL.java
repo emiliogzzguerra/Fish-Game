@@ -5,6 +5,7 @@
  */
 package fish.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -24,12 +25,17 @@ public class ObstacleL extends Item{
     @Override
     public void tick() {
         //movimiento
+        //moviendo a los obstaculos
+        if(game.getKeyManager().space){
+            setY(getY()+1);
+        }
         
     }
 
     @Override
     public void render(Graphics g) {
-        //imagen
-        
+        //rectangulo por ahora...
+        g.setColor(Color.BLACK);
+        g.fillRect(getX(), getY(), getWidth(), getHeight());        
     }
 }
