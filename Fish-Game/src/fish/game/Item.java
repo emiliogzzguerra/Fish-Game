@@ -49,6 +49,14 @@ public abstract class Item {
     public int getY() {
         return y;
     }
+    
+    public int getXmid(){
+        return getX()+getWidth()/2;
+    }
+    
+    public int getYmid(){
+        return getY()+getHeight()/2;
+    }
 
     public int getHeight() {
         return height;

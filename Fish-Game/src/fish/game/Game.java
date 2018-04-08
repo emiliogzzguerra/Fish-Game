@@ -43,6 +43,7 @@ public class Game implements Runnable {
     private ArrayList<Background> backgrounds; //to store background collection
     private ArrayList<ObstacleL> obstaclesL; //to store enemies collection
     private ArrayList<ObstacleR> obstaclesR; //to store enemies collection
+    private ArrayList<Stalker> stalkers; //to store stalkers collection
     //extras
     String titulo;
     //sonido
@@ -116,13 +117,14 @@ public class Game implements Runnable {
     private void init() {
          display = new Display(title, getWidth(), getHeight());  
          Assets.init();
-         //inicia el jugador donde??
-         pez = new Pez(this.getHeight()-20, this.getWidth()/2, 10, 10, this);
-
-
+         //player
+         pez = new Pez(this.getHeight()-20, this.getWidth()/2, 40, 40, this);
          //create Array of backgrounds
          backgrounds = new ArrayList<>();
          crearBackground();
+         //create Array of stalkers
+         stalkers = new ArrayList<>();
+         crearStalker();
          //create Array of obstacles left
          obstaclesL = new ArrayList<>();
          //create Array of obstacles right
@@ -156,6 +158,12 @@ public class Game implements Runnable {
              ObstacleL obstacleL = new ObstacleL(0 ,i*100,widthObstacle, heightObstacle, this); 
              obstaclesL.add(obstacleL);
          }
+    }
+    
+    private void crearStalker(){
+        for(int i=0; i<9; i++){
+            stalkers.add(new Stalker(pez.getX()-pez.getWidth()/2,pez.getY(),(9-i)*(pez.getWidth()/10),-(pez.getWidth()/2),(pez.getWidth()/2),(i+1)*(pez.getWidth()/5),(pez.getHeight()/2),(pez.getHeight()/2),this));
+        }
     }
     
     @Override
@@ -202,34 +210,37 @@ public class Game implements Runnable {
                 background.setY(-getHeight()*2);
             }
         }
+        //stalker
+        itr = stalkers.iterator();
+        while(itr.hasNext()){
+            Stalker stalker = (Stalker) itr.next();
+            stalker.tick();
         //obstacles
-        
-        Iterator itrOL = obstaclesL.iterator();
-        while(itrOL.hasNext()){
-            ObstacleL obstacleL = (ObstacleL) itrOL.next();
-            obstacleL.tick();
+        itr = obstaclesL.iterator();
+        while(itr.hasNext()){
+            ObstacleL obstacle = (ObstacleL) itr.next();
+            obstacle.tick();
             //si sale del juego
-            if(obstacleL.getY() >= getHeight())
+            if(obstacle.getY() >= getHeight())
             {
-                obstacleL.setY(-50);
+                obstacle.setY(-50);
             }
             //si choca con el pez
-            if(obstacleL.intersects(pez))
+            if(obstacle.intersects(pez))
             {
                 //poner gameOver
             }
         }
-        
-        Iterator itrOR = obstaclesR.iterator();
-        while(itrOR.hasNext()){
-            ObstacleR obstacleR = (ObstacleR) itrOR.next();
-            obstacleR.tick();
+        itr = obstaclesR.iterator();
+        while(itr.hasNext()){
+            ObstacleR obstacle = (ObstacleR) itr.next();
+            obstacle.tick();
             //si sale del juego
-            if(obstacleR.getY() >= getHeight())
+            if(obstacle.getY() >= getHeight())
             {
-                obstacleR.setY(-50);
+                obstacle.setY(-50);
             }
-            if(obstacleR.intersects(pez))
+            if(obstacle.intersects(pez))
             {
                 //poner gameOver
             }
@@ -259,22 +270,21 @@ public class Game implements Runnable {
                 Background background = (Background) itr.next();
                 background.render(g);
             }
-            //obstaculos de la izquierda
-            Iterator itrOL = obstaclesL.iterator();
-            while (itrOL.hasNext()) 
-            {
-                ((ObstacleL) itrOL.next()).render(g);
-            }
-            Iterator itrOR = obstaclesR.iterator();
-            while (itrOR.hasNext()) 
-            {
-                ((ObstacleR) itrOR.next()).render(g);
-            }
+            //stalker (IMPORTANTE: mantener el stalker.render arriba del pez.render)
+            itr = stalkers.iterator();
+            while(itr.hasNext())
+                ((Stalker) itr.next()).render(g);
+            //obstaculos
+            itr = obstaclesL.iterator();
+            while (itr.hasNext())
+                ((ObstacleL) itr.next()).render(g);
+            itr = obstaclesR.iterator();
+            while (itr.hasNext())
+                ((ObstacleR) itr.next()).render(g);
             //player
             pez.render(g);
             //score
             Graphics2D g2d = (Graphics2D) g;
-            //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setColor(Color.WHITE);
             g2d.setFont(new Font("Verdana", Font.BOLD, 30));
             g2d.drawString(tituloPuntos, 10, 30);
