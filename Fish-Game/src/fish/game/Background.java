@@ -38,7 +38,7 @@ public class Background extends Item{
     public void tick() {
         //moviendo al personaje
         if(game.getKeyManager().space){
-            setY(getY()+1);
+            setY(getY()+game.getVel());
         }
     }
 

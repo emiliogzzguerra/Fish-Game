@@ -17,6 +17,8 @@ import java.awt.Graphics;
  */
 public class Stalker extends Item{
     private Game game;
+    //animation
+    private Animation animation;
     
     //boolean
     private boolean right;
@@ -49,10 +51,13 @@ public class Stalker extends Item{
         this.game = game;
         this.centRight = centRightDef = centRight - centOpu + 10;
         this.centLeft = centLeftDef = centLeft + centOpu - 10;
-        centUp = centDown = centDef = 0;
+        //Ajuste de los stokers al no avanzar. Si le sumas, baja.
+        centUp = centDown = centDef = 5;
         this.centOpu = centOpu;
         this.centUpOpu = centUpOpu + centOpu - 15;
         this.centDownOpu = centDownOpu - centOpu;
+        //animation
+        animation = new Animation(Assets.stalker,100);
         //boolean
         right = false;
         left = false;
@@ -93,10 +98,12 @@ public class Stalker extends Item{
     }
     
     public void voltearVar(){
+        //Ajustar la posicion de los stokers al avanzar.
         centRight = centDef-centOpu;
-        centLeft = centDef+centOpu;
-        centUp = centUpOpu;
-        centDown = centUpOpu;
+        //Si le restas, se va a la izquierda. Si le sumas, se va la derecha.
+        centLeft = centDef+centOpu-15;
+        //Si le sumas, baja. Si le restas, sube.
+        centUp = centDown = centUpOpu-10;
     }
     
     public void defaultVar(){
@@ -128,12 +135,12 @@ public class Stalker extends Item{
         if(down){
             setY(getY()+1);
         }
+        animation.tick();
     }
 
     @Override
     public void render(Graphics g) {
         //imagenes segun el movimiento
-        g.setColor(Color.RED);
-        g.fillOval(getX(), getY(), getWidth(), getHeight());
+        g.drawImage(animation.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
     }
 }

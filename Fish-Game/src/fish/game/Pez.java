@@ -7,6 +7,8 @@ package fish.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 /**
  *
@@ -18,7 +20,11 @@ import java.awt.Graphics;
  */
 public class Pez extends Item{
     private Game game;
-    
+    //animation
+    private Animation pezUp;
+    private Animation pezLeft;
+    private Animation pezRight;
+    //boolean
     private boolean moveToRight;
     
     /**
@@ -32,7 +38,12 @@ public class Pez extends Item{
     public Pez(int x, int y, int width, int height, Game game) {
         super(x, y, width, height);
         this.game = game;
-        this.moveToRight = true;
+        //animation
+        pezUp = new Animation(Assets.player1Up,100);
+        pezLeft = new Animation(Assets.player1Left,100);
+        pezRight = new Animation(Assets.player1Right,100);
+        //boolean
+        moveToRight = true;
     }
 
     @Override
@@ -48,13 +59,28 @@ public class Pez extends Item{
             if(getX() <= 20){
                 moveToRight = true;
             }
-        }        
+        }
+        pezUp.tick();
+        pezLeft.tick();
+        pezRight.tick();
     }
 
     @Override
     public void render(Graphics g) {
         //imagenes segun el movimiento
-        g.setColor(Color.WHITE);
-        g.fillOval(getX(), getY(), getWidth(), getHeight());
+        if(game.getKeyManager().space){
+            Graphics2D g2d = (Graphics2D) g;
+            AffineTransform at = AffineTransform.getTranslateInstance(getX(), getY());
+            if(moveToRight)
+                at.rotate(Math.toRadians(45),30,20);
+            else
+                at.rotate(Math.toRadians(-45),10,30);
+            at.scale(1.2, 1.2);
+            g2d.drawImage(pezUp.getCurrentFrame(), at,null);
+        }
+        else if(moveToRight)
+            g.drawImage(pezRight.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
+        else
+            g.drawImage(pezLeft.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
     }
 }

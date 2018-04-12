@@ -104,6 +104,12 @@ public class Game implements Runnable {
     public Pez getPlayer() {
         return pez;
     }
+    
+    public int getVel(){
+        if(puntuacion/20==0)
+            return 1;
+        return puntuacion/20;
+    }
 
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
@@ -145,9 +151,9 @@ public class Game implements Runnable {
     private void crearObstacles(){
          for(int i = 0; i < 4; i++){
             if((int) (Math.random()*2)==0)
-                obstaclesR.add(new ObstacleR(getWidth()-100,i*(getHeight()/5)-30,100,30,this));
+                obstaclesR.add(new ObstacleR(getWidth()-100,i*(getHeight()/5)-30,100,50,this));
             else
-                obstaclesL.add(new ObstacleL(0,i*(getHeight()/5)-30,100,30,this));
+                obstaclesL.add(new ObstacleL(0,i*(getHeight()/5)-30,100,50,this));
          }
     }
     
@@ -159,9 +165,9 @@ public class Game implements Runnable {
     
      private void agregarObstacle(){
         if((int) (Math.random()*2)==0)
-            obstaclesR.add(new ObstacleR(getWidth()-100,-30,100,30,this));
+            obstaclesR.add(new ObstacleR(getWidth()-100,-50,100,50,this));
         else
-            obstaclesL.add(new ObstacleL(0,-30,100,30,this));
+            obstaclesL.add(new ObstacleL(0,-50,100,50,this));
     }
     
     private void eliminarBackground(){
@@ -243,14 +249,15 @@ public class Game implements Runnable {
         keyManager.tick();
         if(!gameover){
             if(keyManager.space){
-                contador++;
+                contador+=getVel();
                 if(contador>=100){
                     puntuacion++;
                     contador=0;
+                    agregarObstacle();
                 }
                 contObstacle++;
                 if(contObstacle>=(getHeight()/5)){
-                    agregarObstacle();
+                    //agregarObstacle();
                     contObstacle=0;
                 }
             }
@@ -348,24 +355,22 @@ public class Game implements Runnable {
             g2d.setColor(Color.WHITE);
             g2d.setFont(new Font("Verdana", Font.BOLD, 30));
             g2d.drawString(tituloPuntos, 10, 30);
+            g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+            g2d.drawString("Velocidad x" + getVel(), 600, 30);
             //gameover (IMPORTANTE: mantener el gameove.render por debajo de los otros renders)
             if(gameover){
                 g.drawImage(Assets.gameover, 0, 0, width, height, null);
                 
-                g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("Verdana", Font.BOLD, 80));
                 g2d.drawString("Gameover", (getWidth()/2)-200, getHeight()/6);
                 
-                g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("Verdana", Font.BOLD, 60));
                 g2d.drawString("Score", (getWidth()/2)-100, getHeight()/3);
                 
-                g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("Verdana", Font.BOLD, 100));
                 g2d.drawString("" + puntuacion, (getWidth()/2)-40, getHeight()/2);
                 
                 if(blinking){
-                    g2d.setColor(Color.WHITE);
                     g2d.setFont(new Font("Verdana", Font.BOLD, 20));
                     g2d.drawString("Presiona 'R' para volver a jugar!!", 200, getHeight()-40);
                     contador++;

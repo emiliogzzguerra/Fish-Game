@@ -25,15 +25,12 @@ public class ObstacleL extends Item{
     public void tick() {
         //moviendo a los obstaculos
         if(game.getKeyManager().space){
-            setY(getY()+1);
+            setY(getY()+game.getVel());
         }
-        
     }
 
     @Override
     public void render(Graphics g) {
-        //rectangulo por ahora...
-        g.setColor(Color.BLACK);
-        g.fillRect(getX(), getY(), getWidth(), getHeight());        
+        g.drawImage(Assets.wood, getX(), getY(), getWidth(), getHeight(), null);      
     }
 }
