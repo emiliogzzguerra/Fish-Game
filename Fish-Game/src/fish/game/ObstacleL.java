@@ -7,6 +7,8 @@ package fish.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 /**
  *
@@ -31,6 +33,9 @@ public class ObstacleL extends Item{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.wood, getX(), getY(), getWidth(), getHeight(), null);      
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform at = AffineTransform.getTranslateInstance(getX(), getY());
+        at.rotate(Math.toRadians(90),10,30);
+        g2d.drawImage(Assets.wood, at,null);      
     }
 }

@@ -20,6 +20,8 @@ import java.awt.Graphics;
  */
 public class Background extends Item{
     private Game game;
+    //int
+    private int background;
     
     /**
      * To build a Player object
@@ -29,9 +31,11 @@ public class Background extends Item{
      * @param height an <code>int</code> value to get the height
      * @param game an <code>int</code> value to get outside elements
      */
-    public Background(int x, int y, int width, int height, Game game) {
+    public Background(int x, int y, int width, int height, int num, Game game) {
         super(x, y, width, height);
         this.game = game;
+        //int
+        background=num;
     }
 
     @Override
@@ -44,6 +48,13 @@ public class Background extends Item{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.background, getX(), getY(), getWidth(), getHeight(), null);
+        if(background==1)
+            g.drawImage(Assets.backgroundP1, getX(), getY(), getWidth(), getHeight(), null);
+        else if(background==2)
+            g.drawImage(Assets.backgroundP2, getX(), getY(), getWidth(), getHeight(), null);
+        else if(background==3)
+            g.drawImage(Assets.backgroundP3, getX(), getY(), getWidth(), getHeight(), null);
+        else if(background==4)
+            g.drawImage(Assets.backgroundP4, getX(), getY(), getWidth(), getHeight(), null);
     }
 }

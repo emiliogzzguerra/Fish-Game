@@ -20,7 +20,10 @@ import java.awt.image.BufferedImage;
  * 
  */
 public class Assets {
-    public static BufferedImage background;
+    public static BufferedImage backgroundP1;
+    public static BufferedImage backgroundP2;
+    public static BufferedImage backgroundP3;
+    public static BufferedImage backgroundP4;
     public static BufferedImage gameover;
     //player
     public static BufferedImage player1Up[];
@@ -41,6 +44,8 @@ public class Assets {
     public static BufferedImage sprites_stalker;
     //obstacle
     public static BufferedImage wood;
+    public static BufferedImage sprites_Tree;
+    public static BufferedImage sprites_Tree2;
 
     /**
      * initializing the images of the game
@@ -48,15 +53,21 @@ public class Assets {
     public static void init() {
         //load images
         //imagenes directas
-        background = ImageLoader.loadImage("/imagenes/background.jpg");
+        backgroundP1 = ImageLoader.loadImage("/imagenes/waterP1.png");
+        backgroundP2 = ImageLoader.loadImage("/imagenes/waterP2.png");
+        backgroundP3 = ImageLoader.loadImage("/imagenes/waterP3.png");
+        backgroundP4 = ImageLoader.loadImage("/imagenes/waterP4.png");
         gameover = ImageLoader.loadImage("/imagenes/gameover.jpg");
-        wood = ImageLoader.loadImage("/imagenes/wood.png");
         //sprites
         sprites_player = ImageLoader.loadImage("/imagenes/pez.png");
         sprites_stalker = ImageLoader.loadImage("/imagenes/agua2.png");
+        sprites_Tree = ImageLoader.loadImage("/imagenes/Tree.png");
+        sprites_Tree2 = ImageLoader.loadImage("/imagenes/Tree2.png");
         //loading sprites
         SpreadSheet spritesheet_Player = new SpreadSheet(sprites_player);
         SpreadSheet spritesheet_Stalker = new SpreadSheet(sprites_stalker);
+        SpreadSheet spritesheet_Tree = new SpreadSheet(sprites_Tree);
+        SpreadSheet spritesheet_Tree2 = new SpreadSheet(sprites_Tree2);
         //creating the arrenge
         //player
         player1Up = new BufferedImage[3];
@@ -91,6 +102,7 @@ public class Assets {
             //stalker
             stalker[i]=spritesheet_Stalker.crop(3*96+i*96,0,94,94);
         }
+        //Tree
+        wood = spritesheet_Tree2.crop(70,115,60,120);
     }
-    
 }

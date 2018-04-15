@@ -51,12 +51,12 @@ public class Pez extends Item{
         //moviendo al personaje de derecha a izquierda
         if(moveToRight){
             setX(getX() + 5);
-            if(getX()+getWidth() >= game.getWidth()-20){
+            if(getX()+getWidth() >= game.getWidth()-80){
                 moveToRight = false;
             }
         } else {
             setX(getX() - 5);
-            if(getX() <= 20){
+            if(getX() <= 80){
                 moveToRight = true;
             }
         }

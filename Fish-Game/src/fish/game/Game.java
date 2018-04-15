@@ -106,8 +106,10 @@ public class Game implements Runnable {
     }
     
     public int getVel(){
-        if(puntuacion/20==0)
+        if(puntuacion/10==0)
             return 1;
+        if(puntuacion/20<2)
+            return 2;
         return puntuacion/20;
     }
 
@@ -143,17 +145,26 @@ public class Game implements Runnable {
     }
     
     private void crearBackground(){
-        backgrounds.add(new Background(0,0,getWidth(),getHeight(),this));
-        backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
-        backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
+        for(int cont=0; cont<2; cont++){
+            //Primera fila de backgrounds
+            backgrounds.add(new Background(0,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,1,this));
+            backgrounds.add(new Background(getWidth()/4,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,2,this));
+            backgrounds.add(new Background(getWidth()/2,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,3,this));
+            backgrounds.add(new Background(3*getWidth()/4,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,4,this));
+            //segunda fila de backgrounds
+            backgrounds.add(new Background(0,-cont*getHeight(),getWidth()/4,getHeight()/2,1,this));
+            backgrounds.add(new Background(getWidth()/4,-cont*getHeight(),getWidth()/4,getHeight()/2,2,this));
+            backgrounds.add(new Background(getWidth()/2,-cont*getHeight(),getWidth()/4,getHeight()/2,3,this));
+            backgrounds.add(new Background(3*getWidth()/4,-cont*getHeight(),getWidth()/4,getHeight()/2,4,this));
+        }
     }
     
     private void crearObstacles(){
          for(int i = 0; i < 4; i++){
             if((int) (Math.random()*2)==0)
-                obstaclesR.add(new ObstacleR(getWidth()-100,i*(getHeight()/5)-30,100,50,this));
+                obstaclesR.add(new ObstacleR(getWidth()-160,i*(getHeight()/5)-30,100,50,this));
             else
-                obstaclesL.add(new ObstacleL(0,i*(getHeight()/5)-30,100,50,this));
+                obstaclesL.add(new ObstacleL(60,i*(getHeight()/5)-30,100,50,this));
          }
     }
     
@@ -165,9 +176,9 @@ public class Game implements Runnable {
     
      private void agregarObstacle(){
         if((int) (Math.random()*2)==0)
-            obstaclesR.add(new ObstacleR(getWidth()-100,-50,100,50,this));
+            obstaclesR.add(new ObstacleR(getWidth()-160,-50,100,50,this));
         else
-            obstaclesL.add(new ObstacleL(0,-50,100,50,this));
+            obstaclesL.add(new ObstacleL(60,-50,100,50,this));
     }
     
     private void eliminarBackground(){
@@ -269,7 +280,7 @@ public class Game implements Runnable {
                 Background background = (Background) itr.next();
                 background.tick();
                 if(background.getY()>=getHeight()){
-                    background.setY(-getHeight()*2);
+                    background.setY(-getHeight());
                 }
             }
             //stalker
