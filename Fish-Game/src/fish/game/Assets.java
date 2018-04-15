@@ -25,6 +25,10 @@ public class Assets {
     public static BufferedImage backgroundP3;
     public static BufferedImage backgroundP4;
     public static BufferedImage gameover;
+    //decoracion
+    public static BufferedImage arbusto;
+    public static BufferedImage arbusto2;
+    public static BufferedImage arbol;
     //player
     public static BufferedImage player1Up[];
     public static BufferedImage player1Left[];
@@ -44,8 +48,10 @@ public class Assets {
     public static BufferedImage sprites_stalker;
     //obstacle
     public static BufferedImage wood;
+    public static BufferedImage flores;
     public static BufferedImage sprites_Tree;
     public static BufferedImage sprites_Tree2;
+    public static BufferedImage sprites_Tree3;
 
     /**
      * initializing the images of the game
@@ -63,11 +69,13 @@ public class Assets {
         sprites_stalker = ImageLoader.loadImage("/imagenes/agua2.png");
         sprites_Tree = ImageLoader.loadImage("/imagenes/Tree.png");
         sprites_Tree2 = ImageLoader.loadImage("/imagenes/Tree2.png");
+        sprites_Tree3 = ImageLoader.loadImage("/imagenes/Tree3.png");
         //loading sprites
         SpreadSheet spritesheet_Player = new SpreadSheet(sprites_player);
         SpreadSheet spritesheet_Stalker = new SpreadSheet(sprites_stalker);
         SpreadSheet spritesheet_Tree = new SpreadSheet(sprites_Tree);
         SpreadSheet spritesheet_Tree2 = new SpreadSheet(sprites_Tree2);
+        SpreadSheet spritesheet_Tree3 = new SpreadSheet(sprites_Tree3);
         //creating the arrenge
         //player
         player1Up = new BufferedImage[3];
@@ -102,7 +110,12 @@ public class Assets {
             //stalker
             stalker[i]=spritesheet_Stalker.crop(3*96+i*96,0,94,94);
         }
-        //Tree
+        //Obstacle
         wood = spritesheet_Tree2.crop(70,115,60,120);
+        flores = spritesheet_Tree3.crop(250,0,100,120);
+        //decoraciones
+        arbusto = spritesheet_Tree.crop(210,0,110,100);
+        arbusto2 = spritesheet_Tree.crop(265,100,140,140);
+        arbol = spritesheet_Tree.crop(640,0,120,200);
     }
 }

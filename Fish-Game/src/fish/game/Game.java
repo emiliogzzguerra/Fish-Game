@@ -43,12 +43,10 @@ public class Game implements Runnable {
     private ArrayList<ObstacleL> obstaclesL; //to store enemies collection
     private ArrayList<ObstacleR> obstaclesR; //to store enemies collection
     private ArrayList<Stalker> stalkers; //to store stalkers collection
-    //extras
-    String titulo;
+    private ArrayList<Decoracion> decoraciones; //to store decoraciones collection
     //ints
     private int puntuacion;
     private int contador;
-    private int contObstacle;
     //extras
     String tituloPuntos;
     String letPuntos;
@@ -75,7 +73,6 @@ public class Game implements Runnable {
         //int
         puntuacion = 0;
         contador = 0;
-        contObstacle = 0;
         //extras
         letPuntos = "Score: ";
         tituloPuntos = letPuntos + puntuacion;
@@ -139,6 +136,9 @@ public class Game implements Runnable {
          obstaclesL = new ArrayList<>();
          obstaclesR = new ArrayList<>();
          crearObstacles();
+         //create Array of decoraciones
+         decoraciones = new ArrayList<>();         
+         crearDecoraciones();
          
          //no modificar
          display.getJframe().addKeyListener(keyManager);
@@ -162,9 +162,9 @@ public class Game implements Runnable {
     private void crearObstacles(){
          for(int i = 0; i < 4; i++){
             if((int) (Math.random()*2)==0)
-                obstaclesR.add(new ObstacleR(getWidth()-160,i*(getHeight()/5)-30,100,50,this));
+                obstaclesR.add(new ObstacleR(getWidth()-200,i*(getHeight()/5)-30,140,40,this));
             else
-                obstaclesL.add(new ObstacleL(60,i*(getHeight()/5)-30,100,50,this));
+                obstaclesL.add(new ObstacleL(50,i*(getHeight()/5)-30,140,40,this));
          }
     }
     
@@ -174,11 +174,20 @@ public class Game implements Runnable {
         }
     }
     
-     private void agregarObstacle(){
+    private void crearDecoraciones(){
+        for(int i=0; i<6; i++){
+            //decoraciones= izquierda
+            decoraciones.add(new Decoracion(0,-120+i*100,100,100, (int) (Math.random()*3),this));
+            //decoraciones= derecha
+            decoraciones.add(new Decoracion(getWidth()-100,-20+i*100,100,100, (int) (Math.random()*3),this));
+        }
+    }
+    
+    private void agregarObstacle(){
         if((int) (Math.random()*2)==0)
-            obstaclesR.add(new ObstacleR(getWidth()-160,-50,100,50,this));
+            obstaclesR.add(new ObstacleR(getWidth()-200,-50,140,40,this));
         else
-            obstaclesL.add(new ObstacleL(60,-50,100,50,this));
+            obstaclesL.add(new ObstacleL(50,-50,140,40,this));
     }
     
     private void eliminarBackground(){
@@ -202,11 +211,19 @@ public class Game implements Runnable {
         }
     }
     
-   private void eliminarStalkers(){
+    private void eliminarStalkers(){
         Iterator itr = stalkers.iterator();
         while(itr.hasNext()){
             stalkers.remove((Stalker) itr.next());
             itr = stalkers.iterator();
+        }
+    }
+    
+    private void eliminarDecoraciones(){
+        Iterator itr = decoraciones.iterator();
+        while(itr.hasNext()){
+            decoraciones.remove((Decoracion) itr.next());
+            itr = decoraciones.iterator();
         }
     }
     
@@ -215,6 +232,7 @@ public class Game implements Runnable {
         eliminarBackground();
         eliminarObstacles();
         eliminarStalkers();
+        eliminarDecoraciones();
         //reposicionar player
         pez.setX(getWidth()/2);
         //reiniciar conteo
@@ -223,6 +241,7 @@ public class Game implements Runnable {
         crearBackground();
         crearObstacles();
         crearStalkers();
+        crearDecoraciones();
     }
     
     @Override
@@ -261,17 +280,13 @@ public class Game implements Runnable {
         if(!gameover){
             if(keyManager.space){
                 contador+=getVel();
-                if(contador>=100){
+                if(contador>=150){
                     puntuacion++;
                     contador=0;
                     agregarObstacle();
                 }
-                contObstacle++;
-                if(contObstacle>=(getHeight()/5)){
-                    //agregarObstacle();
-                    contObstacle=0;
-                }
             }
+            
             //player
             pez.tick();
             //background
@@ -316,6 +331,18 @@ public class Game implements Runnable {
                 if(obstacle.intersects(pez))
                     gameover= true;
             }
+            //decoraciones
+            itr = decoraciones.iterator();
+            while(itr.hasNext()){
+                Decoracion decoracion = (Decoracion) itr.next();
+                decoracion.tick();
+                //si sale del juego
+                if(decoracion.getY() >= getHeight()){
+                    decoracion.setY(-120);
+                    decoracion.setDecora((int) (Math.random()*3));
+                }
+            }
+            
             //actualizar score
             tituloPuntos = letPuntos + puntuacion;
         }
@@ -359,6 +386,10 @@ public class Game implements Runnable {
             itr = obstaclesR.iterator();
             while (itr.hasNext())
                 ((ObstacleR) itr.next()).render(g);
+            //decoraciones
+            itr = decoraciones.iterator();
+            while (itr.hasNext())
+                ((Decoracion) itr.next()).render(g);
             //player
             pez.render(g);
             //score

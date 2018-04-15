@@ -40,7 +40,6 @@ public class Background extends Item{
 
     @Override
     public void tick() {
-        //moviendo al personaje
         if(game.getKeyManager().space){
             setY(getY()+game.getVel());
         }
@@ -48,12 +47,13 @@ public class Background extends Item{
 
     @Override
     public void render(Graphics g) {
+        
         if(background==1)
             g.drawImage(Assets.backgroundP1, getX(), getY(), getWidth(), getHeight(), null);
         else if(background==2)
-            g.drawImage(Assets.backgroundP2, getX(), getY(), getWidth(), getHeight(), null);
-        else if(background==3)
             g.drawImage(Assets.backgroundP3, getX(), getY(), getWidth(), getHeight(), null);
+        else if(background==3)
+            g.drawImage(Assets.backgroundP2, getX(), getY(), getWidth(), getHeight(), null);
         else if(background==4)
             g.drawImage(Assets.backgroundP4, getX(), getY(), getWidth(), getHeight(), null);
     }

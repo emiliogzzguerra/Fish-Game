@@ -34,8 +34,9 @@ public class ObstacleL extends Item{
     @Override
     public void render(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        AffineTransform at = AffineTransform.getTranslateInstance(getX(), getY());
-        at.rotate(Math.toRadians(90),10,30);
-        g2d.drawImage(Assets.wood, at,null);      
+        AffineTransform at = AffineTransform.getTranslateInstance(getX()+135, getY()-20);
+        at.rotate(Math.toRadians(90),0,0);
+        at.scale(1.6, 1.6);
+        g2d.drawImage(Assets.wood, at,null);
     }
 }
