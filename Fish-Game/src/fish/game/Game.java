@@ -39,6 +39,7 @@ public class Game implements Runnable {
     
     //Objetos
     private Pez pez;          // to use a player
+    
     //Arreglos
     private ArrayList<Background> backgrounds; //to store background collection
     private ArrayList<ObstacleL> obstaclesL; //to store enemies collection
@@ -47,12 +48,15 @@ public class Game implements Runnable {
     private ArrayList<Stalker> stalkers; //to store stalkers collection
     private ArrayList<Decoracion> decoraciones; //to store decoraciones collection
     private ArrayList<Pez> players; //to store players collection
+    
     //ints
     private int puntuacion;
     private int contador;
+    
     //extras
     String tituloPuntos;
     String letPuntos;
+    
     //boolean
     private boolean running;        // to set the game
     private boolean gameover;       // to end the game
@@ -72,14 +76,17 @@ public class Game implements Runnable {
         this.title = title;
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
+        
         //boolean
         running = false;
         gameover = false;
         blinking = false;
         beginning = true;
+        
         //int
         puntuacion = 0;
         contador = 0;
+        
         //extras
         letPuntos = "Score: ";
         tituloPuntos = letPuntos + puntuacion;
@@ -148,17 +155,21 @@ public class Game implements Runnable {
         //create Array of backgrounds
         backgrounds = new ArrayList<>();
         crearBackground();
+        
         //create Array of stalkers
         stalkers = new ArrayList<>();
         crearStalkers();
+        
         //create Array of obstacles
         obstaclesL = new ArrayList<>();
         obstaclesM = new ArrayList<>();
         obstaclesR = new ArrayList<>();
         crearObstacles();
+        
         //create Array of decoraciones
         decoraciones = new ArrayList<>();         
         crearDecoraciones();
+        
         //create Array of players
         players = new ArrayList<>();
         crearPlayers();
@@ -178,6 +189,7 @@ public class Game implements Runnable {
             backgrounds.add(new Background(getWidth()/4,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,2,this));
             backgrounds.add(new Background(getWidth()/2,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,3,this));
             backgrounds.add(new Background(3*getWidth()/4,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,4,this));
+            
             //segunda fila de backgrounds
             backgrounds.add(new Background(0,-cont*getHeight(),getWidth()/4,getHeight()/2,1,this));
             backgrounds.add(new Background(getWidth()/4,-cont*getHeight(),getWidth()/4,getHeight()/2,2,this));
@@ -205,6 +217,7 @@ public class Game implements Runnable {
         for(int i=0; i<6; i++){
             //decoraciones= izquierda
             decoraciones.add(new Decoracion(0,-120+i*100,100,100, (int) (Math.random()*3),this));
+            
             //decoraciones= derecha
             decoraciones.add(new Decoracion(getWidth()-100,-20+i*100,100,100, (int) (Math.random()*3),this));
         }
@@ -275,15 +288,148 @@ public class Game implements Runnable {
         eliminarObstacles();
         eliminarStalkers();
         eliminarDecoraciones();
+        
         //reposicionar player
         pez.setX(getWidth()/2);
+        
         //reiniciar conteo
         setPuntuacion(0);
+        
         //recrear objetos de arreglos
         crearBackground();
         crearObstacles();
         crearStalkers();
         crearDecoraciones();
+    }
+    
+    private void textoBeginning(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        //color de la letra
+        g2d.setColor(Color.BLACK);
+        
+        //Titulo del juego
+        //Otra opcion: AR CENA
+        g2d.setFont(new Font("Eras Bold ITC", Font.BOLD, 80));
+        g2d.drawString("Fish-Game", (getWidth()/2)-150, getHeight()/6);
+        
+        //Creadores
+        g2d.setFont(new Font("AR DESTINE", Font.BOLD, 40));
+        g2d.drawString("By NirvanaGamming", (getWidth()/2)-230, getHeight()-100);
+    }
+    
+    private void textoGameover(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        //color de la letra
+        g2d.setColor(Color.black);
+        
+        //Gameover Abajo
+        g2d.setFont(new Font("AR CHRISTY", Font.BOLD, 80));
+        g2d.drawString("Gameover", (getWidth()/2)-187, getHeight()/6-2);
+        
+        //Gameover Abajo
+        g2d.setFont(new Font("AR CHRISTY", Font.BOLD, 80));
+        g2d.drawString("Gameover", (getWidth()/2)-193, getHeight()/6+2);
+        
+        //color de la letra
+        g2d.setColor(Color.red);
+        
+        //Gameover Arriba
+        g2d.setFont(new Font("AR CHRISTY", Font.BOLD, 80));
+        g2d.drawString("Gameover", (getWidth()/2)-190, getHeight()/6);
+        
+        //color de la letra
+        g2d.setColor(Color.black);
+        
+        //Score Abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 60));
+        g2d.drawString("Score", 103, getHeight()/3-2);
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 100));
+        g2d.drawString("" + puntuacion, 103, getHeight()/2-2);
+        
+        //Score Abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 60));
+        g2d.drawString("Score", 97, getHeight()/3+2);
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 100));
+        g2d.drawString("" + puntuacion, 97, getHeight()/2+2);
+        
+        //color de la letra
+        g2d.setColor(Color.YELLOW);
+        
+        //Score Arriba
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 61));
+        g2d.drawString("Score", 100, getHeight()/3);
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 101));
+        g2d.drawString("" + puntuacion, 100, getHeight()/2);
+        
+        //Mensajes para volver a jugar o al menu
+        if(blinking){
+            //color de la letra
+            g2d.setColor(Color.black);
+            
+            //abajo
+            g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+            g2d.drawString("Presiona 'R' para volver a jugar!!", 197, getHeight()-52);
+            g2d.drawString("Presiona 'M' para volver al menu", 200, getHeight()-22);
+            
+            //abajo
+            g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+            g2d.drawString("Presiona 'R' para volver a jugar!!", 203, getHeight()-48);
+            g2d.drawString("Presiona 'M' para volver al menu", 203, getHeight()-18);
+            
+            //color de la letra
+            g2d.setColor(Color.CYAN);
+            
+            //arriba
+            g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+            g2d.drawString("Presiona 'R' para volver a jugar!!", 200, getHeight()-50);
+            g2d.drawString("Presiona 'M' para volver al menu", 204, getHeight()-20);
+            
+            contador++;
+            if(contador >= 20){
+                blinking = false;
+                contador = 0;
+            }
+        }
+        else{
+            contador++;
+            if(contador >= 20){
+                blinking = true;
+                contador = 0;
+            }
+        }
+    }
+    
+    public void textoJuego(Graphics g){
+        Graphics2D g2d = (Graphics2D) g;
+        //color del texto
+        g2d.setColor(Color.black);
+        
+        //score abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 30));
+        g2d.drawString(tituloPuntos, 7, 32);
+        
+        //score abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 30));
+        g2d.drawString(tituloPuntos, 13, 28);
+        
+        //velocidad abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
+        g2d.drawString("Velocidad x" + getVel(), 603, 28);
+        
+        //velocidad abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
+        g2d.drawString("Velocidad x" + getVel(), 597, 32);
+        
+        //color del texto
+        g2d.setColor(Color.white);
+        
+        //score arriba
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 30));
+        g2d.drawString(tituloPuntos, 10, 30);
+        
+        //velocidad arriba
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
+        g2d.drawString("Velocidad x" + getVel(), 600, 30);
     }
     
     @Override
@@ -331,6 +477,7 @@ public class Game implements Runnable {
             
             //player
             pez.tick();
+            
             //background
             Iterator itr = backgrounds.iterator();
             while(itr.hasNext()){
@@ -340,12 +487,14 @@ public class Game implements Runnable {
                     background.setY(-getHeight());
                 }
             }
+            
             //stalker
             itr = stalkers.iterator();
             while(itr.hasNext()){
                 Stalker stalker = (Stalker) itr.next();
                 stalker.tick();
             }
+            
             //obstacles
             itr = obstaclesL.iterator();
             while(itr.hasNext()){
@@ -386,6 +535,7 @@ public class Game implements Runnable {
                 if(obstacle.intersects(pez))
                     gameover= true;
             }
+            
             //decoraciones
             itr = decoraciones.iterator();
             while(itr.hasNext()){
@@ -442,10 +592,12 @@ public class Game implements Runnable {
                 Background background = (Background) itr.next();
                 background.render(g);
             }
+            
             //stalker (IMPORTANTE: mantener el stalker.render arriba del pez.render)
             itr = stalkers.iterator();
             while(itr.hasNext())
                 ((Stalker) itr.next()).render(g);
+            
             //obstaculos
             itr = obstaclesL.iterator();
             while (itr.hasNext())
@@ -456,59 +608,34 @@ public class Game implements Runnable {
             itr = obstaclesR.iterator();
             while (itr.hasNext())
                 ((ObstacleR) itr.next()).render(g);
+            
             //decoraciones
             itr = decoraciones.iterator();
             while (itr.hasNext())
                 ((Decoracion) itr.next()).render(g);
+            
             //player
             pez.render(g);
-            //score
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(Color.WHITE);
-            g2d.setFont(new Font("Verdana", Font.BOLD, 30));
-            g2d.drawString(tituloPuntos, 10, 30);
-            g2d.setFont(new Font("Verdana", Font.BOLD, 20));
-            g2d.drawString("Velocidad x" + getVel(), 600, 30);
+            
+            //score y velocidad
+            textoJuego(g);
+            
             //gameover (IMPORTANTE: mantener el gameove.render por debajo de los otros renders)
             if(gameover){
                 g.drawImage(Assets.gameover, 0, 0, width, height, null);
                 
-                g2d.setFont(new Font("Verdana", Font.BOLD, 80));
-                g2d.drawString("Gameover", (getWidth()/2)-200, getHeight()/6);
-                
-                g2d.setFont(new Font("Verdana", Font.BOLD, 60));
-                g2d.drawString("Score", (getWidth()/2)-100, getHeight()/3);
-                g2d.setFont(new Font("Verdana", Font.BOLD, 100));
-                g2d.drawString("" + puntuacion, (getWidth()/2)-40, getHeight()/2);
-                
-                if(blinking){
-                    g2d.setFont(new Font("Verdana", Font.BOLD, 20));
-                    g2d.drawString("Presiona 'R' para volver a jugar!!", 200, getHeight()-50);
-                    g2d.drawString("Presiona 'M' para volver al menu", 204, getHeight()-20);
-                    contador++;
-                    if(contador >= 20){
-                        blinking = false;
-                        contador = 0;
-                    }
-                }
-                else{
-                    contador++;
-                    if(contador >= 20){
-                        blinking = true;
-                        contador = 0;
-                    }
-                }
+                //texto
+                textoGameover(g);
             }
+            
             //start
             else if(beginning){
                 g.drawImage(Assets.start, 0, 0, width, height, null);
                 
-                g2d.setFont(new Font("Verdana", Font.BOLD, 80));
-                g2d.drawString("Fish-Game", (getWidth()/2)-150, getHeight()/6);
+                //texto
+                textoBeginning(g);
                 
-                g2d.setFont(new Font("Verdana", Font.BOLD, 40));
-                g2d.drawString("By NirvanaGamming", (getWidth()/2)-230, getHeight()-100);
-                
+                //player
                 itr = players.iterator();
                 while(itr.hasNext()){
                     ((Pez) itr.next()).render(g);
