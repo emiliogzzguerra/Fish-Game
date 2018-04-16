@@ -15,10 +15,10 @@ import java.awt.geom.AffineTransform;
  * @author NirvanaGaming
  * 
  */
-public class ObstacleL extends Item{
+public class ObstacleM extends Item{
     private Game game;
     
-    public ObstacleL(int x, int y, int width, int height, Game game) {
+    public ObstacleM(int x, int y, int width, int height, Game game) {
         super(x, y, width, height);
         this.game = game;
     }
@@ -33,10 +33,6 @@ public class ObstacleL extends Item{
 
     @Override
     public void render(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        AffineTransform at = AffineTransform.getTranslateInstance(getX()+135, getY()-20);
-        at.rotate(Math.toRadians(90),0,0);
-        at.scale(1.6, 1.6);
-        g2d.drawImage(Assets.wood, at,null);
+        g.drawImage(Assets.flores,getX(),getY(),getWidth(),getHeight(),null);
     }
 }

@@ -7,6 +7,8 @@ package fish.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 /**
  *
@@ -25,15 +27,16 @@ public class ObstacleR extends Item{
     public void tick() {
         //moviendo a los obstaculos
         if(game.getKeyManager().space){
-            setY(getY()+1);
+            setY(getY()+game.getVel());
         }
-        
     }
 
     @Override
     public void render(Graphics g) {
-        //rectangulo por ahora...
-        g.setColor(Color.BLACK);
-        g.fillRect(getX(), getY(), getWidth(), getHeight());
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform at = AffineTransform.getTranslateInstance(getX()+15, getY()+60);
+        at.rotate(Math.toRadians(-90),0,0);
+        at.scale(1.6, 1.6);
+        g2d.drawImage(Assets.wood, at,null);
     }
 }

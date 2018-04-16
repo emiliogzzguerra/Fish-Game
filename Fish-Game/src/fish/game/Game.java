@@ -41,14 +41,13 @@ public class Game implements Runnable {
     //Arreglos
     private ArrayList<Background> backgrounds; //to store background collection
     private ArrayList<ObstacleL> obstaclesL; //to store enemies collection
+    private ArrayList<ObstacleM> obstaclesM; //to store enemies collection
     private ArrayList<ObstacleR> obstaclesR; //to store enemies collection
     private ArrayList<Stalker> stalkers; //to store stalkers collection
-    //extras
-    String titulo;
+    private ArrayList<Decoracion> decoraciones; //to store decoraciones collection
     //ints
     private int puntuacion;
     private int contador;
-    private int contObstacle;
     //extras
     String tituloPuntos;
     String letPuntos;
@@ -75,7 +74,6 @@ public class Game implements Runnable {
         //int
         puntuacion = 0;
         contador = 0;
-        contObstacle = 0;
         //extras
         letPuntos = "Score: ";
         tituloPuntos = letPuntos + puntuacion;
@@ -104,6 +102,14 @@ public class Game implements Runnable {
     public Pez getPlayer() {
         return pez;
     }
+    
+    public int getVel(){
+        if(puntuacion/10==0)
+            return 1;
+        if(puntuacion/20<2)
+            return 2;
+        return puntuacion/20;
+    }
 
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
@@ -129,25 +135,38 @@ public class Game implements Runnable {
          crearStalkers();
          //create Array of obstacles
          obstaclesL = new ArrayList<>();
+         obstaclesM = new ArrayList<>();
          obstaclesR = new ArrayList<>();
          crearObstacles();
+         //create Array of decoraciones
+         decoraciones = new ArrayList<>();         
+         crearDecoraciones();
          
          //no modificar
          display.getJframe().addKeyListener(keyManager);
     }
     
     private void crearBackground(){
-        backgrounds.add(new Background(0,0,getWidth(),getHeight(),this));
-        backgrounds.add(new Background(0,-getHeight(),getWidth(),getHeight(),this));
-        backgrounds.add(new Background(0,-getHeight()*2,getWidth(),getHeight(),this));
+        for(int cont=0; cont<2; cont++){
+            //Primera fila de backgrounds
+            backgrounds.add(new Background(0,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,1,this));
+            backgrounds.add(new Background(getWidth()/4,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,2,this));
+            backgrounds.add(new Background(getWidth()/2,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,3,this));
+            backgrounds.add(new Background(3*getWidth()/4,-cont*getHeight()+getHeight()/2,getWidth()/4,getHeight()/2,4,this));
+            //segunda fila de backgrounds
+            backgrounds.add(new Background(0,-cont*getHeight(),getWidth()/4,getHeight()/2,1,this));
+            backgrounds.add(new Background(getWidth()/4,-cont*getHeight(),getWidth()/4,getHeight()/2,2,this));
+            backgrounds.add(new Background(getWidth()/2,-cont*getHeight(),getWidth()/4,getHeight()/2,3,this));
+            backgrounds.add(new Background(3*getWidth()/4,-cont*getHeight(),getWidth()/4,getHeight()/2,4,this));
+        }
     }
     
     private void crearObstacles(){
          for(int i = 0; i < 4; i++){
             if((int) (Math.random()*2)==0)
-                obstaclesR.add(new ObstacleR(getWidth()-100,i*(getHeight()/5)-30,100,30,this));
+                obstaclesR.add(new ObstacleR(getWidth()-200,i*(getHeight()/5)-30,140,40,this));
             else
-                obstaclesL.add(new ObstacleL(0,i*(getHeight()/5)-30,100,30,this));
+                obstaclesL.add(new ObstacleL(50,i*(getHeight()/5)-30,140,40,this));
          }
     }
     
@@ -157,11 +176,24 @@ public class Game implements Runnable {
         }
     }
     
-     private void agregarObstacle(){
+    private void crearDecoraciones(){
+        for(int i=0; i<6; i++){
+            //decoraciones= izquierda
+            decoraciones.add(new Decoracion(0,-120+i*100,100,100, (int) (Math.random()*3),this));
+            //decoraciones= derecha
+            decoraciones.add(new Decoracion(getWidth()-100,-20+i*100,100,100, (int) (Math.random()*3),this));
+        }
+    }
+    
+    private void agregarObstacle(){
         if((int) (Math.random()*2)==0)
-            obstaclesR.add(new ObstacleR(getWidth()-100,-30,100,30,this));
+            obstaclesR.add(new ObstacleR(getWidth()-200,-50,140,40,this));
         else
-            obstaclesL.add(new ObstacleL(0,-30,100,30,this));
+            obstaclesL.add(new ObstacleL(50,-50,140,40,this));
+        if(puntuacion>=30){
+            if((int) (Math.random()*4)==0)
+                obstaclesM.add(new ObstacleM((getWidth()/2)-50,-120,120,100,this));
+        }
     }
     
     private void eliminarBackground(){
@@ -178,6 +210,11 @@ public class Game implements Runnable {
             obstaclesL.remove((ObstacleL) itr.next());
             itr = obstaclesL.iterator();
         }
+        itr = obstaclesM.iterator();
+        while(itr.hasNext()){
+            obstaclesM.remove((ObstacleM) itr.next());
+            itr = obstaclesM.iterator();
+        }
         itr = obstaclesR.iterator();
         while(itr.hasNext()){
             obstaclesR.remove((ObstacleR) itr.next());
@@ -185,11 +222,19 @@ public class Game implements Runnable {
         }
     }
     
-   private void eliminarStalkers(){
+    private void eliminarStalkers(){
         Iterator itr = stalkers.iterator();
         while(itr.hasNext()){
             stalkers.remove((Stalker) itr.next());
             itr = stalkers.iterator();
+        }
+    }
+    
+    private void eliminarDecoraciones(){
+        Iterator itr = decoraciones.iterator();
+        while(itr.hasNext()){
+            decoraciones.remove((Decoracion) itr.next());
+            itr = decoraciones.iterator();
         }
     }
     
@@ -198,6 +243,7 @@ public class Game implements Runnable {
         eliminarBackground();
         eliminarObstacles();
         eliminarStalkers();
+        eliminarDecoraciones();
         //reposicionar player
         pez.setX(getWidth()/2);
         //reiniciar conteo
@@ -206,6 +252,7 @@ public class Game implements Runnable {
         crearBackground();
         crearObstacles();
         crearStalkers();
+        crearDecoraciones();
     }
     
     @Override
@@ -243,17 +290,14 @@ public class Game implements Runnable {
         keyManager.tick();
         if(!gameover){
             if(keyManager.space){
-                contador++;
-                if(contador>=100){
+                contador+=getVel();
+                if(contador>=150){
                     puntuacion++;
                     contador=0;
-                }
-                contObstacle++;
-                if(contObstacle>=(getHeight()/5)){
                     agregarObstacle();
-                    contObstacle=0;
                 }
             }
+            
             //player
             pez.tick();
             //background
@@ -262,7 +306,7 @@ public class Game implements Runnable {
                 Background background = (Background) itr.next();
                 background.tick();
                 if(background.getY()>=getHeight()){
-                    background.setY(-getHeight()*2);
+                    background.setY(-getHeight());
                 }
             }
             //stalker
@@ -285,6 +329,19 @@ public class Game implements Runnable {
                 if(obstacle.intersects(pez))
                     gameover = true;
             }
+            itr = obstaclesM.iterator();
+            while(itr.hasNext()){
+                ObstacleM obstacle = (ObstacleM) itr.next();
+                obstacle.tick();
+                //si sale del juego
+                if(obstacle.getY() >= getHeight()){
+                    obstaclesM.remove(obstacle);
+                    itr = obstaclesM.iterator();
+                }
+                //si choca con player
+                if(obstacle.intersects(pez))
+                    gameover= true;
+            }
             itr = obstaclesR.iterator();
             while(itr.hasNext()){
                 ObstacleR obstacle = (ObstacleR) itr.next();
@@ -298,6 +355,18 @@ public class Game implements Runnable {
                 if(obstacle.intersects(pez))
                     gameover= true;
             }
+            //decoraciones
+            itr = decoraciones.iterator();
+            while(itr.hasNext()){
+                Decoracion decoracion = (Decoracion) itr.next();
+                decoracion.tick();
+                //si sale del juego
+                if(decoracion.getY() >= getHeight()){
+                    decoracion.setY(-120);
+                    decoracion.setDecora((int) (Math.random()*3));
+                }
+            }
+            
             //actualizar score
             tituloPuntos = letPuntos + puntuacion;
         }
@@ -338,9 +407,16 @@ public class Game implements Runnable {
             itr = obstaclesL.iterator();
             while (itr.hasNext())
                 ((ObstacleL) itr.next()).render(g);
+            itr = obstaclesM.iterator();
+            while (itr.hasNext())
+                ((ObstacleM) itr.next()).render(g);
             itr = obstaclesR.iterator();
             while (itr.hasNext())
                 ((ObstacleR) itr.next()).render(g);
+            //decoraciones
+            itr = decoraciones.iterator();
+            while (itr.hasNext())
+                ((Decoracion) itr.next()).render(g);
             //player
             pez.render(g);
             //score
@@ -348,24 +424,22 @@ public class Game implements Runnable {
             g2d.setColor(Color.WHITE);
             g2d.setFont(new Font("Verdana", Font.BOLD, 30));
             g2d.drawString(tituloPuntos, 10, 30);
+            g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+            g2d.drawString("Velocidad x" + getVel(), 600, 30);
             //gameover (IMPORTANTE: mantener el gameove.render por debajo de los otros renders)
             if(gameover){
                 g.drawImage(Assets.gameover, 0, 0, width, height, null);
                 
-                g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("Verdana", Font.BOLD, 80));
                 g2d.drawString("Gameover", (getWidth()/2)-200, getHeight()/6);
                 
-                g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("Verdana", Font.BOLD, 60));
                 g2d.drawString("Score", (getWidth()/2)-100, getHeight()/3);
                 
-                g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("Verdana", Font.BOLD, 100));
                 g2d.drawString("" + puntuacion, (getWidth()/2)-40, getHeight()/2);
                 
                 if(blinking){
-                    g2d.setColor(Color.WHITE);
                     g2d.setFont(new Font("Verdana", Font.BOLD, 20));
                     g2d.drawString("Presiona 'R' para volver a jugar!!", 200, getHeight()-40);
                     contador++;

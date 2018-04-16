@@ -33,7 +33,7 @@ public class Animation {
     public BufferedImage getCurrentFrame(){
         return frames[index];
     }
-    
+
     public void tick(){
         //acumulating time from the prevoius tick to this one
         timer += System.currentTimeMillis() - lastTime;
