@@ -41,6 +41,7 @@ public class Game implements Runnable {
     //Arreglos
     private ArrayList<Background> backgrounds; //to store background collection
     private ArrayList<ObstacleL> obstaclesL; //to store enemies collection
+    private ArrayList<ObstacleM> obstaclesM; //to store enemies collection
     private ArrayList<ObstacleR> obstaclesR; //to store enemies collection
     private ArrayList<Stalker> stalkers; //to store stalkers collection
     private ArrayList<Decoracion> decoraciones; //to store decoraciones collection
@@ -134,6 +135,7 @@ public class Game implements Runnable {
          crearStalkers();
          //create Array of obstacles
          obstaclesL = new ArrayList<>();
+         obstaclesM = new ArrayList<>();
          obstaclesR = new ArrayList<>();
          crearObstacles();
          //create Array of decoraciones
@@ -188,6 +190,10 @@ public class Game implements Runnable {
             obstaclesR.add(new ObstacleR(getWidth()-200,-50,140,40,this));
         else
             obstaclesL.add(new ObstacleL(50,-50,140,40,this));
+        if(puntuacion>=30){
+            if((int) (Math.random()*4)==0)
+                obstaclesM.add(new ObstacleM((getWidth()/2)-50,-120,120,100,this));
+        }
     }
     
     private void eliminarBackground(){
@@ -203,6 +209,11 @@ public class Game implements Runnable {
         while(itr.hasNext()){
             obstaclesL.remove((ObstacleL) itr.next());
             itr = obstaclesL.iterator();
+        }
+        itr = obstaclesM.iterator();
+        while(itr.hasNext()){
+            obstaclesM.remove((ObstacleM) itr.next());
+            itr = obstaclesM.iterator();
         }
         itr = obstaclesR.iterator();
         while(itr.hasNext()){
@@ -318,6 +329,19 @@ public class Game implements Runnable {
                 if(obstacle.intersects(pez))
                     gameover = true;
             }
+            itr = obstaclesM.iterator();
+            while(itr.hasNext()){
+                ObstacleM obstacle = (ObstacleM) itr.next();
+                obstacle.tick();
+                //si sale del juego
+                if(obstacle.getY() >= getHeight()){
+                    obstaclesM.remove(obstacle);
+                    itr = obstaclesM.iterator();
+                }
+                //si choca con player
+                if(obstacle.intersects(pez))
+                    gameover= true;
+            }
             itr = obstaclesR.iterator();
             while(itr.hasNext()){
                 ObstacleR obstacle = (ObstacleR) itr.next();
@@ -383,6 +407,9 @@ public class Game implements Runnable {
             itr = obstaclesL.iterator();
             while (itr.hasNext())
                 ((ObstacleL) itr.next()).render(g);
+            itr = obstaclesM.iterator();
+            while (itr.hasNext())
+                ((ObstacleM) itr.next()).render(g);
             itr = obstaclesR.iterator();
             while (itr.hasNext())
                 ((ObstacleR) itr.next()).render(g);
