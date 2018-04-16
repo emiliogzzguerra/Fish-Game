@@ -102,6 +102,7 @@ public class Pez extends Item{
                 if(getX() <= 80)
                     moveToRight = true;
             }
+            pezUp.tick();
         }
         else{
             if(contains(game.getMouseManager().getX(),game.getMouseManager().getY())){
