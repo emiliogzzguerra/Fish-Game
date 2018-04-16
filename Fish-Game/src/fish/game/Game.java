@@ -39,6 +39,7 @@ public class Game implements Runnable {
     
     //Objetos
     private Pez pez;          // to use a player
+    private Score score;    //to save the score
     
     //Arreglos
     private ArrayList<Background> backgrounds; //to store background collection
@@ -76,6 +77,7 @@ public class Game implements Runnable {
         this.title = title;
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
+        score = new Score(this,10);
         
         //boolean
         running = false;

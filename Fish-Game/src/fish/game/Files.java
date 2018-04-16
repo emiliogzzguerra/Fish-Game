@@ -48,4 +48,17 @@ public class Files {
             System.out.println("Juego no ha sido guardado " + ioe.toString());
         }
     }
+    
+    public static boolean existsFile(Game game){
+        BufferedReader bufferedReader;
+        try{
+            //abriendo archivo
+            bufferedReader = new BufferedReader( new FileReader("data.txt"));
+            
+            //si logro abrirlo, significa que existe
+            return true;
+        }catch (IOException ioe){
+            return false;
+        }
+    }
 }
