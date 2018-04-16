@@ -35,6 +35,7 @@ public class Game implements Runnable {
     private int height;             // alto
     private Thread thread;          // thread to create the game
     private KeyManager keyManager;  // to manage the keyboard
+    private MouseManager mouseManager; //to manage the mouse
     
     //Objetos
     private Pez pez;          // to use a player
@@ -45,6 +46,7 @@ public class Game implements Runnable {
     private ArrayList<ObstacleR> obstaclesR; //to store enemies collection
     private ArrayList<Stalker> stalkers; //to store stalkers collection
     private ArrayList<Decoracion> decoraciones; //to store decoraciones collection
+    private ArrayList<Pez> players; //to store players collection
     //ints
     private int puntuacion;
     private int contador;
@@ -55,11 +57,13 @@ public class Game implements Runnable {
     private boolean running;        // to set the game
     private boolean gameover;       // to end the game
     private boolean blinking;
+    private boolean beginning;
     
     /**
      * to create title, width and height and set the game is still not running
      * @param width to set the width of the window
-     * @param height  to set the height of the window
+     * @param height to set the height of the window
+     * @param title to set the title of the window
      */
     public Game(int width, int height, String title) {
         //obligatorio
@@ -67,10 +71,12 @@ public class Game implements Runnable {
         this.height = height;
         this.title = title;
         keyManager = new KeyManager();
+        mouseManager = new MouseManager();
         //boolean
         running = false;
         gameover = false;
         blinking = false;
+        beginning = true;
         //int
         puntuacion = 0;
         contador = 0;
@@ -99,6 +105,10 @@ public class Game implements Runnable {
         return keyManager;
     }
 
+    public MouseManager getMouseManager() {
+        return mouseManager;
+    }
+
     public Pez getPlayer() {
         return pez;
     }
@@ -116,34 +126,49 @@ public class Game implements Runnable {
         contador = 0;
     }
 
+    public void setBeginning(boolean beginning) {
+        this.beginning = beginning;
+    }
+
+    public boolean isBeginning() {
+        return beginning;
+    }
+
     /**
      * initializing the display window of the game
      */
     private void init() {
         //no modificar
-         display = new Display(title, getWidth(), getHeight());  
-         Assets.init();
+        display = new Display(title, getWidth(), getHeight());  
+        Assets.init();
+        
+        //create player
+        pez = new Pez(getWidth()/2,getHeight()-100, 40, 40, false, 1, this);
          
-         //create player
-         pez = new Pez(getWidth()/2,getHeight()-100, 40, 40, this);
-         
-         //create Array of backgrounds
-         backgrounds = new ArrayList<>();
-         crearBackground();
-         //create Array of stalkers
-         stalkers = new ArrayList<>();
-         crearStalkers();
-         //create Array of obstacles
-         obstaclesL = new ArrayList<>();
-         obstaclesM = new ArrayList<>();
-         obstaclesR = new ArrayList<>();
-         crearObstacles();
-         //create Array of decoraciones
-         decoraciones = new ArrayList<>();         
-         crearDecoraciones();
-         
-         //no modificar
-         display.getJframe().addKeyListener(keyManager);
+        //create Array of backgrounds
+        backgrounds = new ArrayList<>();
+        crearBackground();
+        //create Array of stalkers
+        stalkers = new ArrayList<>();
+        crearStalkers();
+        //create Array of obstacles
+        obstaclesL = new ArrayList<>();
+        obstaclesM = new ArrayList<>();
+        obstaclesR = new ArrayList<>();
+        crearObstacles();
+        //create Array of decoraciones
+        decoraciones = new ArrayList<>();         
+        crearDecoraciones();
+        //create Array of players
+        players = new ArrayList<>();
+        crearPlayers();
+        
+        //no modificar
+        display.getJframe().addKeyListener(keyManager);
+        display.getJframe().addMouseListener(mouseManager);
+        display.getJframe().addMouseMotionListener(mouseManager);
+        display.getCanvas().addMouseListener(mouseManager);
+        display.getCanvas().addMouseMotionListener(mouseManager);
     }
     
     private void crearBackground(){
@@ -182,6 +207,12 @@ public class Game implements Runnable {
             decoraciones.add(new Decoracion(0,-120+i*100,100,100, (int) (Math.random()*3),this));
             //decoraciones= derecha
             decoraciones.add(new Decoracion(getWidth()-100,-20+i*100,100,100, (int) (Math.random()*3),this));
+        }
+    }
+    
+    private void crearPlayers(){
+        for(int i=0; i<4; i++){
+            players.add(new Pez(150+i*150,250,70,70,true,i+1,this));
         }
     }
     
@@ -288,7 +319,7 @@ public class Game implements Runnable {
     private void tick() {
         //KeyManager
         keyManager.tick();
-        if(!gameover){
+        if(!gameover && !beginning){
             if(keyManager.space){
                 contador+=getVel();
                 if(contador>=150){
@@ -370,11 +401,23 @@ public class Game implements Runnable {
             //actualizar score
             tituloPuntos = letPuntos + puntuacion;
         }
-        else
+        else if(gameover){
             if(keyManager.R){
                 gameover = false;
                 reordenar();
             }
+            if(keyManager.M){
+                gameover = false;
+                beginning = true;
+                reordenar();
+            }
+        }
+        else if(beginning){
+            Iterator itr = players.iterator();
+            while(itr.hasNext()){
+                ((Pez) itr.next()).tick();
+            }
+        }
     }
     
     private void render() {
@@ -435,25 +478,40 @@ public class Game implements Runnable {
                 
                 g2d.setFont(new Font("Verdana", Font.BOLD, 60));
                 g2d.drawString("Score", (getWidth()/2)-100, getHeight()/3);
-                
                 g2d.setFont(new Font("Verdana", Font.BOLD, 100));
                 g2d.drawString("" + puntuacion, (getWidth()/2)-40, getHeight()/2);
                 
                 if(blinking){
                     g2d.setFont(new Font("Verdana", Font.BOLD, 20));
-                    g2d.drawString("Presiona 'R' para volver a jugar!!", 200, getHeight()-40);
+                    g2d.drawString("Presiona 'R' para volver a jugar!!", 200, getHeight()-50);
+                    g2d.drawString("Presiona 'M' para volver al menu", 204, getHeight()-20);
                     contador++;
-                    if(contador >= 17){
+                    if(contador >= 20){
                         blinking = false;
                         contador = 0;
                     }
                 }
                 else{
                     contador++;
-                    if(contador >= 17){
+                    if(contador >= 20){
                         blinking = true;
                         contador = 0;
                     }
+                }
+            }
+            //start
+            else if(beginning){
+                g.drawImage(Assets.start, 0, 0, width, height, null);
+                
+                g2d.setFont(new Font("Verdana", Font.BOLD, 80));
+                g2d.drawString("Fish-Game", (getWidth()/2)-150, getHeight()/6);
+                
+                g2d.setFont(new Font("Verdana", Font.BOLD, 40));
+                g2d.drawString("By NirvanaGamming", (getWidth()/2)-230, getHeight()-100);
+                
+                itr = players.iterator();
+                while(itr.hasNext()){
+                    ((Pez) itr.next()).render(g);
                 }
             }
             
