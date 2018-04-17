@@ -326,42 +326,66 @@ public class Game implements Runnable {
         
         //Gameover Abajo
         g2d.setFont(new Font("AR CHRISTY", Font.BOLD, 80));
-        g2d.drawString("Gameover", (getWidth()/2)-187, getHeight()/6-2);
+        g2d.drawString("Gameover", 87, getHeight()/6-2);
         
         //Gameover Abajo
         g2d.setFont(new Font("AR CHRISTY", Font.BOLD, 80));
-        g2d.drawString("Gameover", (getWidth()/2)-193, getHeight()/6+2);
+        g2d.drawString("Gameover", 93, getHeight()/6+2);
+        
+        //Score Abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 60));
+        g2d.drawString("Score", 53, 198);
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 100));
+        g2d.drawString("" + puntuacion, 93, 298);
+        
+        //Score Abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 60));
+        g2d.drawString("Score", 47, 202);
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 100));
+        g2d.drawString("" + puntuacion, 87, 302);
+        
+        //Lista de Score abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 70));
+        g2d.drawString("Top " + score.getMaxSize(), getWidth()/2+103, 58);
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 40));
+        for(int cont=0; cont<score.getSize(); cont++){
+            g2d.drawString("" + (cont+1) + ". " + score.getAt(cont), getWidth()/2+113,73+(cont+1)*40);
+        }
+        
+        //Lista de Score abaojo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 70));
+        g2d.drawString("Top " + score.getMaxSize(), getWidth()/2+97, 62);
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 40));
+        for(int cont=0; cont<score.getSize(); cont++){
+            g2d.drawString("" + (cont+1) + ". " + score.getAt(cont), getWidth()/2+107,77+(cont+1)*40);
+        }
         
         //color de la letra
         g2d.setColor(Color.red);
         
         //Gameover Arriba
         g2d.setFont(new Font("AR CHRISTY", Font.BOLD, 80));
-        g2d.drawString("Gameover", (getWidth()/2)-190, getHeight()/6);
-        
-        //color de la letra
-        g2d.setColor(Color.black);
-        
-        //Score Abajo
-        g2d.setFont(new Font("Segoe Print", Font.BOLD, 60));
-        g2d.drawString("Score", 103, getHeight()/3-2);
-        g2d.setFont(new Font("Segoe Print", Font.BOLD, 100));
-        g2d.drawString("" + puntuacion, 103, getHeight()/2-2);
-        
-        //Score Abajo
-        g2d.setFont(new Font("Segoe Print", Font.BOLD, 60));
-        g2d.drawString("Score", 97, getHeight()/3+2);
-        g2d.setFont(new Font("Segoe Print", Font.BOLD, 100));
-        g2d.drawString("" + puntuacion, 97, getHeight()/2+2);
+        g2d.drawString("Gameover", 90, getHeight()/6);
         
         //color de la letra
         g2d.setColor(Color.YELLOW);
         
         //Score Arriba
         g2d.setFont(new Font("Segoe Print", Font.BOLD, 61));
-        g2d.drawString("Score", 100, getHeight()/3);
+        g2d.drawString("Score", 50, 200);
         g2d.setFont(new Font("Segoe Print", Font.BOLD, 101));
-        g2d.drawString("" + puntuacion, 100, getHeight()/2);
+        g2d.drawString("" + puntuacion, 90, 300);
+        
+        //color de la letra
+        g2d.setColor(Color.BLUE);
+        
+        //Lista de Score arriba
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 70));
+        g2d.drawString("Top " + score.getMaxSize(), getWidth()/2+100, 60);
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 40));
+        for(int cont=0; cont<score.getSize(); cont++){
+            g2d.drawString("" + (cont+1) + ". " + score.getAt(cont), getWidth()/2+110,75+(cont+1)*40);
+        }
         
         //Mensajes para volver a jugar o al menu
         if(blinking){
@@ -370,21 +394,21 @@ public class Game implements Runnable {
             
             //abajo
             g2d.setFont(new Font("Verdana", Font.BOLD, 20));
-            g2d.drawString("Presiona 'R' para volver a jugar!!", 197, getHeight()-52);
-            g2d.drawString("Presiona 'M' para volver al menu", 200, getHeight()-22);
+            g2d.drawString("Presiona 'R' para volver a jugar!!", 94, getHeight()-52);
+            g2d.drawString("Presiona 'M' para volver al menu", 97, getHeight()-22);
             
             //abajo
             g2d.setFont(new Font("Verdana", Font.BOLD, 20));
-            g2d.drawString("Presiona 'R' para volver a jugar!!", 203, getHeight()-48);
-            g2d.drawString("Presiona 'M' para volver al menu", 203, getHeight()-18);
+            g2d.drawString("Presiona 'R' para volver a jugar!!", 100, getHeight()-48);
+            g2d.drawString("Presiona 'M' para volver al menu", 103, getHeight()-18);
             
             //color de la letra
             g2d.setColor(Color.CYAN);
             
             //arriba
             g2d.setFont(new Font("Verdana", Font.BOLD, 20));
-            g2d.drawString("Presiona 'R' para volver a jugar!!", 200, getHeight()-50);
-            g2d.drawString("Presiona 'M' para volver al menu", 204, getHeight()-20);
+            g2d.drawString("Presiona 'R' para volver a jugar!!", 97, getHeight()-50);
+            g2d.drawString("Presiona 'M' para volver al menu", 100, getHeight()-20);
             
             contador++;
             if(contador >= 20){
@@ -552,6 +576,12 @@ public class Game implements Runnable {
             
             //actualizar score
             tituloPuntos = letPuntos + puntuacion;
+            
+            //agregar score
+            if(gameover){
+                score.add(puntuacion);
+                score.save();
+            }
         }
         else if(gameover){
             if(keyManager.R){
