@@ -50,6 +50,18 @@ public class Game implements Runnable {
     private ArrayList<Decoracion> decoraciones; //to store decoraciones collection
     private ArrayList<Pez> players; //to store players collection
     
+    //sound
+    private SoundClip musicaBeginning;
+    private SoundClip musicaGameover;
+    private SoundClip musica;
+    private SoundClip aves1;
+    private SoundClip aves2;
+    private SoundClip agua1;
+    private SoundClip agua2;
+    private SoundClip aguaAves;
+    private SoundClip efecto1;
+    private SoundClip efecto2;
+    
     //ints
     private int puntuacion;
     private int contador;
@@ -78,6 +90,30 @@ public class Game implements Runnable {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
         score = new Score(this,10);
+        
+        //sound con loop
+        musicaBeginning = new SoundClip("/sonido/musica animada.wav");
+        musicaGameover = new SoundClip("/sonido/musica triste.wav");
+        musica = new SoundClip("/sonido/musica aventura.wav");
+        aves1 = new SoundClip("/sonido/aves.wav");
+        aves2 = new SoundClip("/sonido/aves2.wav");
+        agua1 = new SoundClip("/sonido/arroyo.wav");
+        agua2 = new SoundClip("/sonido/agua.wav");
+        aguaAves = new SoundClip("/sonido/aves y agua.wav");
+        
+        //agregando looping
+        musicaBeginning.setLooping(true);
+        musicaGameover.setLooping(true);
+        musica.setLooping(true);
+        aves1.setLooping(true);
+        aves2.setLooping(true);
+        agua1.setLooping(true);
+        agua2.setLooping(true);
+        aguaAves.setLooping(true);
+        
+        //sound sin loop
+        efecto1 = new SoundClip("/sonido/suspenso.wav");
+        efecto2 = new SoundClip("/sonido/malo.wav");
         
         //boolean
         running = false;
@@ -176,12 +212,49 @@ public class Game implements Runnable {
         players = new ArrayList<>();
         crearPlayers();
         
+        //starting sound
+        playBeginning();
+        
         //no modificar
         display.getJframe().addKeyListener(keyManager);
         display.getJframe().addMouseListener(mouseManager);
         display.getJframe().addMouseMotionListener(mouseManager);
         display.getCanvas().addMouseListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
+    }
+    
+    private void playBeginning(){
+        musicaBeginning.play();
+        aguaAves.play();
+    }
+    
+    private void playGamming(){
+        musica.play();
+        aves2.play();
+        agua1.play();
+    }
+    
+    private void playGameover(){
+        musicaGameover.play();
+        aves1.play();
+        agua2.play();
+    }
+    
+    private void stopBeginning(){
+        musicaBeginning.stop();
+        aguaAves.stop();
+    }
+    
+    private void stopGamming(){
+        musica.stop();
+        aves2.stop();
+        agua1.stop();
+    }
+    
+    private void stopGameover(){
+        musicaGameover.stop();
+        aves1.stop();
+        agua2.stop();
     }
     
     private void crearBackground(){
@@ -581,23 +654,33 @@ public class Game implements Runnable {
             if(gameover){
                 score.add(puntuacion);
                 score.save();
+                stopGamming();
+                playGameover();
             }
         }
         else if(gameover){
             if(keyManager.R){
                 gameover = false;
                 reordenar();
+                stopGameover();
+                playGamming();
             }
             if(keyManager.M){
                 gameover = false;
                 beginning = true;
                 reordenar();
+                stopGameover();
+                playBeginning();
             }
         }
         else if(beginning){
             Iterator itr = players.iterator();
             while(itr.hasNext()){
                 ((Pez) itr.next()).tick();
+            }
+            if(!beginning){
+                stopBeginning();
+                playGamming();
             }
         }
     }
