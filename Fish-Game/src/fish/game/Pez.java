@@ -13,10 +13,10 @@ import java.awt.geom.AffineTransform;
 /**
  *
  * @author NirvanaGaming
- * 
+ *
  * Movimiento:
  * Derecha e Izquierda
- * 
+ *
  */
 public class Pez extends Item{
     private Game game;
@@ -26,7 +26,9 @@ public class Pez extends Item{
     private Animation pezRight;
     //boolean
     private boolean moveToRight;
-    
+    //ints
+    private int velocityBase;
+
     /**
      * To build a Player object
      * @param x an <code>int</code> value to get the x coordinate
@@ -44,21 +46,99 @@ public class Pez extends Item{
         pezRight = new Animation(Assets.player1Right,100);
         //boolean
         moveToRight = true;
+        //int
+        velocityBase = 6;
     }
 
     @Override
     public void tick() {
         //moviendo al personaje de derecha a izquierda
         if(moveToRight){
-            setX(getX() + 5);
-            if(getX()+getWidth() >= game.getWidth()-80){
+            if(getX()+getWidth() >= game.getWidth()-width){
                 moveToRight = false;
+            } else {
+              switch(getNumberedPosition(this.game)){
+                  case 0:
+                      setX(getX() + velocityBase);
+                      break;
+                  case 1:
+                      setX(getX() + (velocityBase + 1));
+                      break;
+                  case 2:
+                      setX(getX() + (velocityBase + 2));
+                      break;
+                  case 3:
+                      setX(getX() + (velocityBase + 3));
+                      break;
+                  case 4:
+                      setX(getX() + (velocityBase + 4));
+                      break;
+                  case 5:
+                      setX(getX() + (velocityBase + 6));
+                      break;
+                  case 6:
+                      setX(getX() + (velocityBase + 6));
+                      break;
+                  case 7:
+                      setX(getX() + (velocityBase + 4));
+                      break;
+                  case 8:
+                      setX(getX() + (velocityBase + 3));
+                      break;
+                  case 9:
+                      setX(getX() + (velocityBase + 2));
+                      break;
+                  case 10:
+                      setX(getX() + (velocityBase + 1));
+                      break;
+                  case 11:
+                      setX(getX() + velocityBase);
+                      break;
+              }
             }
         } else {
-            setX(getX() - 5);
-            if(getX() <= 80){
+            if(getX() <= width){
                 moveToRight = true;
-            }
+            } else {
+              switch(getNumberedPosition(this.game)){
+                  case 0:
+                      setX(getX() - velocityBase);
+                      break;
+                  case 1:
+                      setX(getX() - (velocityBase + 1));
+                      break;
+                  case 2:
+                      setX(getX() - (velocityBase + 2));
+                      break;
+                  case 3:
+                      setX(getX() - (velocityBase + 3));
+                      break;
+                  case 4:
+                      setX(getX() - (velocityBase + 4));
+                      break;
+                  case 5:
+                      setX(getX() - (velocityBase + 6));
+                      break;
+                  case 6:
+                      setX(getX() - (velocityBase + 6));
+                      break;
+                  case 7:
+                      setX(getX() - (velocityBase + 4));
+                      break;
+                  case 8:
+                      setX(getX() - (velocityBase + 3));
+                      break;
+                  case 9:
+                      setX(getX() - (velocityBase + 2));
+                      break;
+                  case 10:
+                      setX(getX() - (velocityBase + 1));
+                      break;
+                  case 11:
+                      setX(getX() - velocityBase);
+                      break;
+              }
+          }
         }
         pezUp.tick();
         pezLeft.tick();

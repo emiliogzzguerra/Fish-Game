@@ -37,6 +37,7 @@ public class Stalker extends Item{
     private int centUpOpu;
     private int centDownOpu;
     private int centOpu;
+    private int velocityBase;
     
     /**
      * To build a Player object
@@ -63,6 +64,7 @@ public class Stalker extends Item{
         left = false;
         up = false;
         down = false;
+        velocityBase = 6;
     }
     
     public boolean chUp() {
@@ -124,10 +126,94 @@ public class Stalker extends Item{
         up = chUp();
         down = chDown();
         
-        if(left)
-            setX(getX()-7);
         if(right){
-            setX(getX()+7);
+            if(getX()+getWidth() >= game.getWidth()-width){
+                right = false;
+                left = true;
+            } else {
+              switch(getNumberedPosition(this.game)){
+                  case 0:
+                      setX(getX() + velocityBase);
+                      break;
+                  case 1:
+                      setX(getX() + (velocityBase + 1));
+                      break;
+                  case 2:
+                      setX(getX() + (velocityBase + 2));
+                      break;
+                  case 3:
+                      setX(getX() + (velocityBase + 3));
+                      break;
+                  case 4:
+                      setX(getX() + (velocityBase + 4));
+                      break;
+                  case 5:
+                      setX(getX() + (velocityBase + 6));
+                      break;
+                  case 6:
+                      setX(getX() + (velocityBase + 6));
+                      break;
+                  case 7:
+                      setX(getX() + (velocityBase + 4));
+                      break;
+                  case 8:
+                      setX(getX() + (velocityBase + 3));
+                      break;
+                  case 9:
+                      setX(getX() + (velocityBase + 2));
+                      break;
+                  case 10:
+                      setX(getX() + (velocityBase + 1));
+                      break;
+                  case 11:
+                      setX(getX() + velocityBase);
+                      break;
+              }
+            }
+        } else if (left) {
+            if(getX() <= width){
+                left = false;
+                right = true;
+            } else {
+              switch(getNumberedPosition(this.game)){
+                  case 0:
+                      setX(getX() - velocityBase);
+                      break;
+                  case 1:
+                      setX(getX() - (velocityBase + 1));
+                      break;
+                  case 2:
+                      setX(getX() - (velocityBase + 2));
+                      break;
+                  case 3:
+                      setX(getX() - (velocityBase + 3));
+                      break;
+                  case 4:
+                      setX(getX() - (velocityBase + 4));
+                      break;
+                  case 5:
+                      setX(getX() - (velocityBase + 6));
+                      break;
+                  case 6:
+                      setX(getX() - (velocityBase + 6));
+                      break;
+                  case 7:
+                      setX(getX() - (velocityBase + 4));
+                      break;
+                  case 8:
+                      setX(getX() - (velocityBase + 3));
+                      break;
+                  case 9:
+                      setX(getX() - (velocityBase + 2));
+                      break;
+                  case 10:
+                      setX(getX() - (velocityBase + 1));
+                      break;
+                  case 11:
+                      setX(getX() - velocityBase);
+                      break;
+              }
+          }
         }
         if(up){
             setY(getY()-1);

@@ -105,10 +105,10 @@ public class Game implements Runnable {
     
     public int getVel(){
         if(puntuacion/10==0)
-            return 1;
+            return 3;
         if(puntuacion/20<2)
-            return 2;
-        return puntuacion/20;
+            return 4;
+        return 6;
     }
 
     public void setPuntuacion(int puntuacion) {

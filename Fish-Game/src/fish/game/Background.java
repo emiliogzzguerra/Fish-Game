@@ -47,7 +47,6 @@ public class Background extends Item{
 
     @Override
     public void render(Graphics g) {
-        
         if(background==1)
             g.drawImage(Assets.backgroundP1, getX(), getY(), getWidth(), getHeight(), null);
         else if(background==2)

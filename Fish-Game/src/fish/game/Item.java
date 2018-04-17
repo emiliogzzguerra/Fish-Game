@@ -108,4 +108,36 @@ public abstract class Item {
      * @param g <b>Graphics</b> object to paint the item
      */
     public abstract void render(Graphics g);
+    
+    public int getNumberedPosition(Game g){
+        int auxInt = 0;
+        int currPosition = getX();
+        int gameWidthDivided = g.getWidth()/12;
+            if(currPosition >= 0 && currPosition<gameWidthDivided){
+                auxInt = 0;
+            } else if(currPosition >= gameWidthDivided && currPosition<(gameWidthDivided*2)){
+                auxInt = 1;
+            } else if(currPosition >= (gameWidthDivided*2) && currPosition<(gameWidthDivided*3)){
+                auxInt = 2;
+            } else if(currPosition >= (gameWidthDivided*3) && currPosition<(gameWidthDivided*4)){
+                auxInt = 3;
+            } else if(currPosition >= (gameWidthDivided*4) && currPosition<(gameWidthDivided*5)){
+                auxInt = 4;
+            } else if(currPosition >= (gameWidthDivided*5) && currPosition<(gameWidthDivided*6)){
+                auxInt = 5;
+            } else if(currPosition >= (gameWidthDivided*6) && currPosition<(gameWidthDivided*7)){
+                auxInt = 6;
+            } else if(currPosition >= (gameWidthDivided*7) && currPosition<(gameWidthDivided*8)){
+                auxInt = 7;
+            } else if(currPosition >= (gameWidthDivided*8) && currPosition<(gameWidthDivided*9)){
+                auxInt = 8;
+            } else if(currPosition >= (gameWidthDivided*9) && currPosition<(gameWidthDivided*10)){
+                auxInt = 9;
+            } else if(currPosition >= (gameWidthDivided*10) && currPosition<(gameWidthDivided*11)){
+                auxInt = 10;
+            } else if(currPosition >= (gameWidthDivided*11) && currPosition<(gameWidthDivided*12)){
+                auxInt = 11;
+            }
+        return auxInt;
+    }
 }

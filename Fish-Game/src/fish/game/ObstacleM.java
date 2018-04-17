@@ -33,6 +33,6 @@ public class ObstacleM extends Item{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.flores,getX(),getY(),getWidth(),getHeight(),null);
+        g.drawImage(Assets.flores,(int) getX(),(int) getY(),getWidth(),getHeight(),null);
     }
 }
