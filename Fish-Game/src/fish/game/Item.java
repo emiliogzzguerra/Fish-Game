@@ -78,8 +78,12 @@ public abstract class Item {
         return ( (obj instanceof Item) && this.getBounds().intersects(((Item) obj).getBounds()) );
     }
     
+    public boolean contains (int x, int y){
+        return (this.getBounds().contains(x, y));
+    }
+    
     private Rectangle getBounds(){
-        return new Rectangle(getX()+(getWidth()/6),getY()+(getHeight()/6),getWidth()-(getWidth()/3),getHeight()-(getHeight()/3));
+        return new Rectangle(getX(),getY(),getWidth(),getHeight());
     }
     
     /**

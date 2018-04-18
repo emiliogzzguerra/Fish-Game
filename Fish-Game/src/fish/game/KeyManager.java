@@ -28,6 +28,7 @@ public class KeyManager implements KeyListener {
     public boolean space;   //para avanzar
     public boolean S;       //para saltar
     public boolean R;       //para volver a jugar
+    public boolean M;       //para ir al menu
     
     private boolean keys[];  // to store all the flags for every key
     
@@ -44,7 +45,7 @@ public class KeyManager implements KeyListener {
         // set true to every key pressed
         keys[e.getKeyCode()] = true;
         //set flag space of if need
-        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_R)
+        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_R || e.getKeyCode() == KeyEvent.VK_M)
             keys[e.getKeyCode()] = false;
     }
 
@@ -53,7 +54,7 @@ public class KeyManager implements KeyListener {
         // set false to every key released
         keys[e.getKeyCode()] = false;
         //set flag space of if need
-        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_R)
+        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_R || e.getKeyCode() == KeyEvent.VK_M)
             keys[e.getKeyCode()] = true;
     }
     
@@ -66,5 +67,7 @@ public class KeyManager implements KeyListener {
         keys[KeyEvent.VK_S] = false;
         R = keys[KeyEvent.VK_R];
         keys[KeyEvent.VK_R] = false;
+        M = keys[KeyEvent.VK_M];
+        keys[KeyEvent.VK_M] = false;
     }
 }

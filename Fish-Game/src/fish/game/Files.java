@@ -17,19 +17,28 @@ import java.io.PrintWriter;
  * 
  * Archivo ejemplo
  * 
- * ... (por crear, para la version 2)
+ * Size,
+ * Score 1,
+ * Score 2,
+ * Score 3,
+ * ...
+ * Score Size,
  * 
  */
 public class Files {
     
-    public static void saveFile(Game game){
+    public static void saveFile(Score score){
         //define objects
         PrintWriter printWriter;
         try{
             //creating file object
             printWriter = new PrintWriter(new FileWriter("data.txt"));
             //writing the game
-            
+            //size
+            printWriter.println("" + score.getSize() + ",");
+            for(int cont=0; cont<score.getSize(); cont++){
+                printWriter.println("" + score.getAt(cont)+ ",");
+            }
             //closing file objet
             printWriter.close();
         }catch(IOException ioe){
@@ -37,15 +46,35 @@ public class Files {
         }
     }
     
-    public static void loadFile(Game game){
+    public static void loadFile(Score score){
         BufferedReader bufferedReader;
         try{
             //abriendo archivo
             bufferedReader = new BufferedReader( new FileReader("data.txt"));
             //leyendo archivo
-            
+            String line = bufferedReader.readLine();
+            String[] tokens = line.split(",");
+            score.setSize(Integer.parseInt(tokens[0]));
+            for(int cont=0; cont<score.getSize(); cont++){
+                line = bufferedReader.readLine();
+                tokens = line.split(",");
+                score.setAt(cont,Integer.parseInt(tokens[0]));
+            }
         }catch (IOException ioe){
             System.out.println("Juego no ha sido guardado " + ioe.toString());
+        }
+    }
+    
+    public static boolean existsFile(){
+        BufferedReader bufferedReader;
+        try{
+            //abriendo archivo
+            bufferedReader = new BufferedReader( new FileReader("data.txt"));
+            
+            //si logro abrirlo, significa que existe
+            return true;
+        }catch (IOException ioe){
+            return false;
         }
     }
 }
