@@ -65,6 +65,7 @@ public class Game implements Runnable {
     //ints
     private int puntuacion;
     private int contador;
+    private int countZ;
     
     //extras
     String tituloPuntos;
@@ -112,8 +113,8 @@ public class Game implements Runnable {
         aguaAves.setLooping(true);
         
         //sound sin loop
-        efecto1 = new SoundClip("/sonido/suspenso.wav");
-        efecto2 = new SoundClip("/sonido/malo.wav");
+        //efecto1 = new SoundClip("/sonido/suspenso.wav");
+        //efecto2 = new SoundClip("/sonido/malo.wav");
         
         //boolean
         running = false;
@@ -124,6 +125,8 @@ public class Game implements Runnable {
         //int
         puntuacion = 0;
         contador = 0;
+        countZ = 0;
+        
         
         //extras
         letPuntos = "Score: ";
@@ -605,7 +608,7 @@ public class Game implements Runnable {
                     itr = obstaclesL.iterator();
                 }
                 //si choca con player
-                if(obstacle.intersects(pez))
+                if(obstacle.intersects(pez) && !pez.keepJumping())
                     gameover = true;
             }
             itr = obstaclesM.iterator();
@@ -618,7 +621,7 @@ public class Game implements Runnable {
                     itr = obstaclesM.iterator();
                 }
                 //si choca con player
-                if(obstacle.intersects(pez))
+                if(obstacle.intersects(pez) && !pez.keepJumping())
                     gameover= true;
             }
             itr = obstaclesR.iterator();
@@ -631,7 +634,7 @@ public class Game implements Runnable {
                     itr = obstaclesR.iterator();
                 }
                 //si choca con player
-                if(obstacle.intersects(pez))
+                if(obstacle.intersects(pez) && !pez.keepJumping())
                     gameover= true;
             }
             

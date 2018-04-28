@@ -29,6 +29,7 @@ public class Pez extends Item{
     //int
     private int pez;
     private int velocityBase;
+    private int timeToKeepJumping;
 
     private boolean decorativo;
 
@@ -50,6 +51,9 @@ public class Pez extends Item{
         choosePez(pez);
         //boolean
         moveToRight = true;
+        
+        //int
+        timeToKeepJumping = 0;
     }
 
     public int getPez() {
@@ -93,6 +97,10 @@ public class Pez extends Item{
         pezUp = new Animation(Assets.player4Up,100);
         pezLeft = new Animation(Assets.player4Left,100);
         pezRight = new Animation(Assets.player4Right,100);
+    }
+    
+    public boolean keepJumping(){
+        return (timeToKeepJumping > 0);
     }
 
     @Override
@@ -205,22 +213,45 @@ public class Pez extends Item{
     @Override
     public void render(Graphics g) {
         //imagenes segun el movimiento
+        if(game.getKeyManager().Z){
+            timeToKeepJumping = 30;
+        }
         if(game.getKeyManager().space && !decorativo){
             Graphics2D g2d = (Graphics2D) g;
-            AffineTransform at = AffineTransform.getTranslateInstance(getX(), getY());
-            if(moveToRight)
-                at.rotate(Math.toRadians(45),30,20);
-            else
-                at.rotate(Math.toRadians(-45),10,30);
-            at.scale(1.2, 1.2);
-            g2d.drawImage(pezUp.getCurrentFrame(), at,null);
-        }
-        else if(game.isBeginning()){
+            AffineTransform at;
+            if(timeToKeepJumping > 0){
+                at = AffineTransform.getTranslateInstance(getX() - getWidth()/2, getY() - getHeight()/2);
+                at.scale(2, 2);
+                timeToKeepJumping--;
+            } else {
+                at = AffineTransform.getTranslateInstance(getX(), getY());
+                at.scale(1.2,1.2);
+            }
+            if(moveToRight){
+                at.rotate(Math.toRadians(45),getWidth()/2+20,getHeight()/2-10);
+                at.scale(1.2, 1.2);
+            }else{
+                at.rotate(Math.toRadians(-45),getWidth()/2-20,getHeight()/2+10);
+                at.scale(1.2, 1.2);
+            }
+            g2d.drawImage(pezUp.getCurrentFrame(),at,null);
+        } else if(game.isBeginning()){
             g.drawImage(pezUp.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
+        } else if(moveToRight){
+            if(timeToKeepJumping > 0){
+                g.drawImage(pezRight.getCurrentFrame(), getX() - getWidth()/2, getY() - getHeight()/2, getWidth()*2, getHeight()*2, null);
+                timeToKeepJumping--;
+            } else {
+                g.drawImage(pezRight.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
+            }
+            
+        } else{
+            if(timeToKeepJumping > 0){
+                g.drawImage(pezLeft.getCurrentFrame(), getX() - getWidth()/2, getY() - getHeight()/2, getWidth()*2, getHeight()*2, null);
+                timeToKeepJumping--;
+            } else {
+                g.drawImage(pezLeft.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
+            }
         }
-        else if(moveToRight)
-            g.drawImage(pezRight.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
-        else
-            g.drawImage(pezLeft.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
     }
 }

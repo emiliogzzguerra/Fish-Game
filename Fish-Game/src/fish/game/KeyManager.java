@@ -7,6 +7,7 @@ package fish.game;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import javafx.scene.input.KeyCode;
 
 /**
  *
@@ -29,6 +30,7 @@ public class KeyManager implements KeyListener {
     public boolean S;       //para saltar
     public boolean R;       //para volver a jugar
     public boolean M;       //para ir al menu
+    public boolean Z;       //para saltar
     
     private boolean keys[];  // to store all the flags for every key
     
@@ -54,7 +56,7 @@ public class KeyManager implements KeyListener {
         // set false to every key released
         keys[e.getKeyCode()] = false;
         //set flag space of if need
-        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_R || e.getKeyCode() == KeyEvent.VK_M)
+        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_R || e.getKeyCode() == KeyEvent.VK_M || e.getKeyCode() == KeyEvent.VK_Z)
             keys[e.getKeyCode()] = true;
     }
     
@@ -69,5 +71,8 @@ public class KeyManager implements KeyListener {
         keys[KeyEvent.VK_R] = false;
         M = keys[KeyEvent.VK_M];
         keys[KeyEvent.VK_M] = false;
+        Z = keys[KeyEvent.VK_Z];
+        keys[KeyEvent.VK_Z] = false;
     }
+
 }
