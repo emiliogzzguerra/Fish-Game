@@ -214,7 +214,10 @@ public class Pez extends Item{
     public void render(Graphics g) {
         //imagenes segun el movimiento
         if(game.getKeyManager().Z){
-            timeToKeepJumping = 30;
+            if(game.getJumpsLeft()>0){
+                game.reduceJumpsLeft();
+                timeToKeepJumping = 30;
+            }
         }
         if(game.getKeyManager().space && !decorativo){
             Graphics2D g2d = (Graphics2D) g;

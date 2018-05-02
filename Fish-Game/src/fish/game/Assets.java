@@ -11,13 +11,6 @@ import java.awt.image.BufferedImage;
  *
  * @author NirvanaGaming
  * 
- * Sprites:
- * Jugador, pez
- * Obstaculos ... cuantos diferentes?
- * Background [3] rio
- * Gameover
- * vidas ... ?
- * 
  */
 public class Assets {
     public static BufferedImage backgroundP1;
@@ -26,6 +19,7 @@ public class Assets {
     public static BufferedImage backgroundP4;
     public static BufferedImage gameover;
     public static BufferedImage start;
+    public static BufferedImage food;
     //decoracion
     public static BufferedImage arbusto;
     public static BufferedImage arbusto2;
@@ -52,7 +46,7 @@ public class Assets {
     public static BufferedImage flores;
     public static BufferedImage sprites_Tree;
     public static BufferedImage sprites_Tree2;
-    public static BufferedImage sprites_Tree3;
+    public static BufferedImage sprites_Tree3;    
 
     /**
      * initializing the images of the game
@@ -66,6 +60,7 @@ public class Assets {
         backgroundP4 = ImageLoader.loadImage("/imagenes/waterP4.png");
         gameover = ImageLoader.loadImage("/imagenes/gameover.jpg");
         start = ImageLoader.loadImage("/imagenes/start.jpg");
+        food = ImageLoader.loadImage("/imagenes/food.png");
         //sprites
         sprites_player = ImageLoader.loadImage("/imagenes/pez.png");
         sprites_stalker = ImageLoader.loadImage("/imagenes/agua2.png");

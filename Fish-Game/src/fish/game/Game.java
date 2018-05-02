@@ -46,6 +46,7 @@ public class Game implements Runnable {
     private ArrayList<ObstacleL> obstaclesL; //to store enemies collection
     private ArrayList<ObstacleM> obstaclesM; //to store enemies collection
     private ArrayList<ObstacleR> obstaclesR; //to store enemies collection
+    private ArrayList<Food> food; //to store the food that will allow fish to jump
     private ArrayList<Stalker> stalkers; //to store stalkers collection
     private ArrayList<Decoracion> decoraciones; //to store decoraciones collection
     private ArrayList<Pez> players; //to store players collection
@@ -65,7 +66,7 @@ public class Game implements Runnable {
     //ints
     private int puntuacion;
     private int contador;
-    private int countZ;
+    private int jumpsLeft;
     
     //extras
     String tituloPuntos;
@@ -125,11 +126,11 @@ public class Game implements Runnable {
         //int
         puntuacion = 0;
         contador = 0;
-        countZ = 0;
+        jumpsLeft = 1;
         
         
         //extras
-        letPuntos = "Score: ";
+        letPuntos = "Puntuación: ";
         tituloPuntos = letPuntos + puntuacion;
     }
 
@@ -206,6 +207,9 @@ public class Game implements Runnable {
         obstaclesM = new ArrayList<>();
         obstaclesR = new ArrayList<>();
         crearObstacles();
+        
+        //create Array of food
+        food = new ArrayList<>();
         
         //create Array of decoraciones
         decoraciones = new ArrayList<>();         
@@ -308,12 +312,18 @@ public class Game implements Runnable {
     }
     
     private void agregarObstacle(){
-        if((int) (Math.random()*2)==0)
+        if((int) (Math.random()*2)==0){
             obstaclesR.add(new ObstacleR(getWidth()-200,-50,140,40,this));
-        else
+            if((int) (Math.random()*20)==0)
+                food.add(new Food(getWidth()-200,0,50,50,this));
+        }else{
             obstaclesL.add(new ObstacleL(50,-50,140,40,this));
+            if((int) (Math.random()*20)==0)
+                food.add(new Food(50,-100,50,50,this));
+        }
+            
         if(puntuacion>=30){
-            if((int) (Math.random()*4)==0)
+            if((int) (Math.random()*40)==0)
                 obstaclesM.add(new ObstacleM((getWidth()/2)-50,-120,120,100,this));
         }
     }
@@ -373,6 +383,9 @@ public class Game implements Runnable {
         //reiniciar conteo
         setPuntuacion(0);
         
+        //reiniciar jumps
+        setJumpsLeft(1);
+        
         //recrear objetos de arreglos
         crearBackground();
         crearObstacles();
@@ -402,11 +415,11 @@ public class Game implements Runnable {
         
         //Gameover Abajo
         g2d.setFont(new Font("AR CHRISTY", Font.BOLD, 80));
-        g2d.drawString("Gameover", 87, getHeight()/6-2);
+        g2d.drawString("Gameover", 27, getHeight()/6-2);
         
         //Gameover Abajo
         g2d.setFont(new Font("AR CHRISTY", Font.BOLD, 80));
-        g2d.drawString("Gameover", 93, getHeight()/6+2);
+        g2d.drawString("Gameover", 33, getHeight()/6+2);
         
         //Score Abajo
         g2d.setFont(new Font("Segoe Print", Font.BOLD, 60));
@@ -441,7 +454,7 @@ public class Game implements Runnable {
         
         //Gameover Arriba
         g2d.setFont(new Font("AR CHRISTY", Font.BOLD, 80));
-        g2d.drawString("Gameover", 90, getHeight()/6);
+        g2d.drawString("Gameover", 30, getHeight()/6);
         
         //color de la letra
         g2d.setColor(Color.YELLOW);
@@ -507,31 +520,55 @@ public class Game implements Runnable {
         g2d.setColor(Color.black);
         
         //score abajo
-        g2d.setFont(new Font("Segoe Print", Font.BOLD, 30));
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
         g2d.drawString(tituloPuntos, 7, 32);
         
         //score abajo
-        g2d.setFont(new Font("Segoe Print", Font.BOLD, 30));
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
         g2d.drawString(tituloPuntos, 13, 28);
         
         //velocidad abajo
         g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
-        g2d.drawString("Velocidad x" + getVel(), 603, 28);
+        g2d.drawString("Velocidad x" + (getVel()-2), 603, 28);
         
         //velocidad abajo
         g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
-        g2d.drawString("Velocidad x" + getVel(), 597, 32);
+        g2d.drawString("Velocidad x" + (getVel()-2), 597, 32);
+        
+        //jumps restantes abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
+        g2d.drawString("Saltos restantes: " + getJumpsLeft(), 287, 28);
+        
+        //jumps restantes abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
+        g2d.drawString("Saltos restantes: " + getJumpsLeft(), 281, 32);
+        
+        //controles abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
+        g2d.drawString("SPACE - Subir | Z - Saltar", 250, 480);
+        
+        //controles abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
+        g2d.drawString("SPACE - Subir | Z - Saltar", 244, 484);
         
         //color del texto
         g2d.setColor(Color.white);
         
         //score arriba
-        g2d.setFont(new Font("Segoe Print", Font.BOLD, 30));
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
         g2d.drawString(tituloPuntos, 10, 30);
         
         //velocidad arriba
         g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
-        g2d.drawString("Velocidad x" + getVel(), 600, 30);
+        g2d.drawString("Velocidad x" + (getVel()-2), 600, 30);
+        
+        //jumps restantes abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
+        g2d.drawString("Saltos restantes: " + getJumpsLeft(), 284, 30);
+        
+        //controles abajo
+        g2d.setFont(new Font("Segoe Print", Font.BOLD, 20));
+        g2d.drawString("SPACE - Subir | Z - Saltar", 247, 482);
     }
     
     @Override
@@ -638,6 +675,25 @@ public class Game implements Runnable {
                     gameover= true;
             }
             
+            //food
+            itr = food.iterator();
+            while(itr.hasNext()){
+                Food fAux = (Food) itr.next();
+                fAux.tick();
+                //si sale del juego
+                if(fAux.getY() >= getHeight()){
+                    food.remove(fAux);
+                    itr = food.iterator();
+                }
+                //si choca con player
+                if(fAux.intersects(pez) && !pez.keepJumping()){
+                    incrementJumpsLeft();
+                    food.remove(fAux);
+                    itr = food.iterator();
+                }
+                    
+            }
+            
             //decoraciones
             itr = decoraciones.iterator();
             while(itr.hasNext()){
@@ -727,6 +783,11 @@ public class Game implements Runnable {
             while (itr.hasNext())
                 ((ObstacleR) itr.next()).render(g);
             
+            //food
+            itr = food.iterator();
+            while (itr.hasNext())
+                ((Food) itr.next()).render(g);
+                
             //decoraciones
             itr = decoraciones.iterator();
             while (itr.hasNext())
@@ -790,4 +851,21 @@ public class Game implements Runnable {
             }           
         }
     }
+
+    public int getJumpsLeft() {
+        return jumpsLeft;
+    }
+    
+    public void setJumpsLeft(int jumpsLeft) {
+        this.jumpsLeft = jumpsLeft;
+    }
+
+    public void reduceJumpsLeft() {
+        this.jumpsLeft = jumpsLeft-1;
+    }
+    
+    public void incrementJumpsLeft() {
+        this.jumpsLeft = jumpsLeft+1;
+    }
+    
 }
